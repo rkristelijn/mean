@@ -17,6 +17,9 @@ Steps done:
 - added testing using mocha and chai
 - added nodemon, restart test and lint
 
+Todo:
+- time build, better output
+
 ## The plan
 
 - REST API and HATEOS (dev webserver, linting, routes, get, post, put, patch, unit tests, unit http tests, test data)
