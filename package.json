@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/rkristelijn/mean/issues"
   },
-  "homepage": "https://github.com/rkristelijn/mean#readme"
+  "homepage": "https://github.com/rkristelijn/mean#readme",
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "express": "^4.16.2"
+  }
 }
