@@ -2,12 +2,20 @@
 
 These are my notes to create a simple boilerplate for a full MEAN stack application
 
+to get started:
+- clone repo (`git clonesh://git@github.com/rkristelijn/mean.git`)
+- install node_modules (`cd mean && npm i`)
+- start app (`npm start --silent`)
+
 Steps done:
 - git init
 - npm init
 - created github repo
 - added express and basic node app
 - added chalk for console highlighting
+- added linting using eslint
+- added testing using mocha and chai
+- added nodemon, restart test and lint
 
 ## The plan
 
