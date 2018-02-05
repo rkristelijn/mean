@@ -1,0 +1,19 @@
+{
+  "name": "mean",
+  "version": "1.0.0",
+  "description": "This is a basic MEAN stack application that can be used as a boilerplate\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rkristelijn/mean.git"
+  },
+  "author": "Remi Kristelijn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rkristelijn/mean/issues"
+  },
+  "homepage": "https://github.com/rkristelijn/mean#readme"
+}
