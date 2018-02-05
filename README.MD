@@ -11,7 +11,7 @@ Steps done:
 
 ## The plan
 
-- REST API and HATEOS (dev webserver, routes, get, post, put, patch, unit tests, unit http tests)
+- REST API and HATEOS (dev webserver, linting, routes, get, post, put, patch, unit tests, unit http tests, test data)
 - OAuth/passport (local and github strategy, logout, save user in db, secure routes)
 - Front-end basics (proxy, fetch, dev server for front-end, watching files and building, refactoring, testing)
 - Front-end cosmetics (header, footer, menu, views, routes, secure routes, refactoring, testing)

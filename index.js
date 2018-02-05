@@ -15,8 +15,9 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, HOST);
 
+/* eslint-disable no-console */
 console.log(
-	chalk.yellow('Running on ') +
+  chalk.yellow('Running on ') +
 	chalk.blueBright(`http://${HOST}:${PORT}`)
 );
 
