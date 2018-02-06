@@ -16,6 +16,7 @@ Steps done:
 - added linting using eslint
 - added testing using mocha and chai
 - added nodemon, restart test and lint
+- added timing using gnomon
 
 Todo:
 - time build, better output

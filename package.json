@@ -4,8 +4,8 @@
   "description": "This is a basic MEAN stack application that can be used as a boilerplate\"",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter progress '**/*.unit.test.js'",
-    "start": "nodemon index.js --exec 'npm run lint && npm run test && node'",
+    "test": "mocha '**/*.unit.test.js'",
+    "start": "nodemon index.js --exec 'npm run lint && npm run test && node' | gnomon",
     "lint": "esw . --color"
   },
   "repository": {
