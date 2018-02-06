@@ -4,7 +4,11 @@
   "description": "This is a basic MEAN stack application that can be used as a boilerplate\"",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js --exec 'npm run test:security && npm run test:unit && npm run lint && node' | gnomon",
+    "start": "nodemon index.js --exec 'npm run test:security && npm run test:unit && npm run lint && node' | gnomon --type=elapsed-total",
+    "start:parallel:norefresh": "npm-run-all --parallel test:security test:unit lint serve | gnomon --type=elapsed-total",
+    "start:parallel": "nodemon index.js --exec 'npm run parellel' | gnomon --type=elapsed-total",
+    "parellel": "npm-run-all --parallel test:security test:unit lint",
+    "serve": "nodemon index.js",
     "pretest:unit": "echo \"Unit testing...\"",
     "test:unit": "mocha '**/*.unit.test.js'",
     "pretest:security": "echo \"Security testing...\"",
