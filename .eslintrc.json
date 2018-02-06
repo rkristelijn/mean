@@ -7,7 +7,6 @@
   },
 
   "rules": {
-
     //
     //Possible Errors
     //
@@ -192,5 +191,8 @@
     "max-statements": 0, // specify the maximum number of statement allowed in a function (off by default)
     "no-bitwise": 0, // disallow use of bitwise operators (off by default)
     "no-plusplus": 2 // disallow use of unary operators, ++ and -- (off by default)
+  },
+  "parserOptions": {
+      "sourceType": "module"
   }
 }

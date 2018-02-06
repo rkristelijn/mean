@@ -3,9 +3,11 @@
 These are my notes to create a simple boilerplate for a full MEAN stack application
 
 to get started:
-- clone repo (`git clonesh://git@github.com/rkristelijn/mean.git`)
+- clone repo (`git clone git@github.com/rkristelijn/mean.git`)
+- install global dependancies: (`sudo npm i -g nodemon gnomon nsp nsp-reporter-checkstyle`)
 - install node_modules (`cd mean && npm i`)
-- start app (`npm start --silent`)
+- start app with linting, tests (`npm start --silent`)
+- start app fast (`npm run start:fast --silent`)
 
 Steps done:
 - git init
