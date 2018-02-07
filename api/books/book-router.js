@@ -9,7 +9,6 @@ let routes = function () {
     .post(bookController.post)
     .get(bookController.get);
 
-  console.log('hooi');
   return bookRouter;
 };
 

@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 
-describe('Our first test', () => {
-  it('should pass', () => {
+describe('Testing with Mocha and Chai...', () => {
+  it('Should pass', () => {
     expect(true).to.equal(true);
   });
 });

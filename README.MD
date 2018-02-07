@@ -21,6 +21,7 @@ Steps done:
 - added timing using gnomon
 - time build, better output
 - watch files and run npm-run-all on change
+- added tests with sinon
 
 ## The plan
 
