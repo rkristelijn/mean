@@ -13,12 +13,19 @@ let env = {
 let dblink = env.prod;
 /* eslint-disable no-unused-vars */
 let db = mongoose.connect(dblink, (connectionErr, con) => {
+  if(connectionErr) {
+    /* eslint-disable no-console */
+    console.log(
+      chalk.red(`[>] MongoDB: could not connect to ${dblink}: `) +
+      chalk.blueBright(connectionErr)
+    );
+  }
   let admin = new mongoose.mongo.Admin(mongoose.connection.db);
   admin.buildInfo(function (adminErr, info) {
     let version = info.version;
     /* eslint-disable no-console */
     console.log(
-      chalk.yellow(`MongoDB v${version}: connected on `) +
+      chalk.green(`[>] MongoDB v${version}: connected on `) +
       chalk.blueBright(`mongodb://${con.host}:${con.port}/${con.name}`)
     );
   });
@@ -37,7 +44,7 @@ app.use('/api', apiRouter);
 app.listen(PORT, HOST, () => {
   /* eslint-disable no-console */
   console.log(
-    chalk.yellow(`Node ${process.version}: REST api running on `) +
+    chalk.green(`[>] Node ${process.version}: REST api running on `) +
     chalk.blueBright(`http://${HOST}:${PORT}`)
   );
 });

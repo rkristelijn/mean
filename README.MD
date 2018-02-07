@@ -19,9 +19,8 @@ Steps done:
 - added testing using mocha and chai
 - added nodemon, restart test and lint
 - added timing using gnomon
-
-Todo:
 - time build, better output
+- watch files and run npm-run-all on change
 
 ## The plan
 

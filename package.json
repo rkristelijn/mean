@@ -3,19 +3,33 @@
   "version": "1.0.0",
   "description": "This is a basic MEAN stack application that can be used as a boilerplate\"",
   "main": "index.js",
+  "watch": {
+    "start:parallel:refresh": {
+      "patterns": ".",
+      "extensions": "js,json,html,css",
+      "quiet": true
+    }
+  },
   "scripts": {
     "start": "nodemon index.js --exec 'npm run test:security && npm run test:unit && npm run lint && node' | gnomon --type=elapsed-total",
-    "start:parallel:norefresh": "npm-run-all --parallel test:security test:unit lint serve | gnomon --type=elapsed-total",
-    "start:parallel": "nodemon index.js --exec 'npm run parellel' | gnomon --type=elapsed-total",
+    "start:parallel:norefresh": "npm-run-all --parallel test:security test:unit lint serve:nodemon | gnomon --type=elapsed-total",
+    "start:parallel:refresh": "npm-run-all --parallel test:security test:unit lint serve | gnomon --type=elapsed-total",
+    "poststart:parallel:refresh": "echo \"[x] All done.\"",
+    "nodemon:": "nodemon index.js --exec 'npm run parellel' | gnomon --type=elapsed-total",
     "parellel": "npm-run-all --parallel test:security test:unit lint",
-    "serve": "nodemon index.js",
+    "serve:nodemon": "nodemon index.js",
+    "serve": "node index.js --color",
     "pretest:unit": "echo \"Unit testing...\"",
-    "test:unit": "mocha '**/*.unit.test.js'",
+    "test:unit": "mocha '**/*.unit.test.js' --color",
+    "posttest:unit": "echo \"[x] Unit testing done.\"",
     "pretest:security": "echo \"Security testing...\"",
-    "test:security": "nsp check --reporter checkstyle",
+    "test:security": "nsp check --reporter checkstyle --color",
+    "posttest:security": "echo \"[x] Security testing done.\"",
     "prelint": "echo \"Linting...\"",
-    "lint": "esw . --color",
-    "start:fast": "nodemon index.js"
+    "lint": "eslint . --color",
+    "postlint": "echo \"[x] Linting done.\"",
+    "start:fast": "nodemon index.js",
+    "watch": "npm-watch"
   },
   "repository": {
     "type": "git",
@@ -42,6 +56,7 @@
     "eslint-watch": "^3.1.3",
     "mocha": "^5.0.0",
     "npm-run-all": "^4.1.2",
+    "npm-watch": "^0.3.0",
     "nsp": "^3.1.0"
   }
 }
