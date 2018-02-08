@@ -50,9 +50,11 @@ let bookController = (Book) => {
       }
     });
   };
-  let _update = (req, res) => {
-    this._readOne(req);
-    req.book.title = req.body.title;
+  let _updateOne = (req, res) => {
+    _readOne(req, res);
+    if (req.book.title) {
+      req.book.title = req.body.title;
+    }
     req.book.author = req.body.author;
     req.book.genre = req.body.genre;
     req.book.read = req.body.read;
@@ -64,11 +66,12 @@ let bookController = (Book) => {
       }
     });
   };
+
   return {
     create: _create,
     readOne: _readOne,
     readAll: _readAll,
-    update: _update
+    updateOne: _updateOne
   };
 };
 module.exports = bookController;

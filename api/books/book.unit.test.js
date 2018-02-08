@@ -138,6 +138,128 @@ describe('books', () => {
         true, 'bookId is required ' + res.status.args[0][0]
       );
     });
+    it('update: should not allow empty bookId', () => {
+      /* eslint-disable no-shadow */
+      let book = {
+        _v: 'myId',
+        title: 'Opvoeden in een gestoorde wereld',
+        author: 'Eugenie van Ruitenbeek, Jan Nouwen',
+        genre: 'Parenting'
+      };
+      let MockBook = {
+        findById: sinon.spy(),
+        save: sinon.spy()
+      };
+      let res = {
+        send: sinon.spy(),
+        status: sinon.spy()
+      };
+      let bookController = require('./book-controller')(MockBook);
+      let req = {
+        book: {
+          title: null,
+          author: null,
+          genre: null,
+          save: sinon.spy()
+        },
+        params: {},
+        body: {
+          title: book.title,
+          author: book.author,
+          genre: book.genre
+        }
+      };
+      bookController.updateOne(req, res);
+      expect(res.status.calledWith(400)).to.be.equal(
+        true, 'bookId is required ' + res.status.args[0][0]
+      );
+    });
+    it('update: should update all values of the book', () => {
+      /* eslint-disable no-shadow */
+      let book = {
+        _v: 'myId',
+        title: 'Opvoeden in een gestoorde wereld',
+        author: 'Eugenie van Ruitenbeek, Jan Nouwen',
+        genre: 'Parenting',
+        read: true
+      };
+
+      let MockBook = {
+        findById: sinon.spy()
+      };
+      let res = {
+        send: sinon.spy(),
+        status: sinon.spy(),
+        json: sinon.spy()
+      };
+      let bookController = require('./book-controller')(MockBook);
+      let req = {
+        book: {
+          title: 'old title value',
+          author: 'old author value',
+          genre: 'old genre value',
+          read: false,
+          save: sinon.spy()
+        },
+        params: {
+          bookId: book._v
+        },
+        body: {
+          title: book.title,
+          author: book.author,
+          genre: book.genre,
+          read: book.read
+        }
+      };
+      bookController.updateOne(req, res);
+      expect(MockBook.findById.args[0][0]).to.equal(book._v);
+      expect(req.book.save.calledOnce);
+      expect(req.book.title).to.be.equal(book.title);
+      expect(req.book.author).to.be.equal(book.author);
+      expect(req.book.genre).to.be.equal(book.genre);
+      expect(req.book.read).to.be.equal(book.read);
+    });
+    it('update: should only update title', () => {
+      /* eslint-disable no-shadow */
+      let book = {
+        _v: 'myId',
+        title: 'Opvoeden in een gestoorde wereld',
+        author: 'Eugenie van Ruitenbeek, Jan Nouwen',
+        genre: 'Parenting',
+        read: true
+      };
+
+      let MockBook = {
+        findById: sinon.spy()
+      };
+      let res = {
+        send: sinon.spy(),
+        status: sinon.spy(),
+        json: sinon.spy()
+      };
+      let bookController = require('./book-controller')(MockBook);
+      let req = {
+        book: {
+          title: 'old title value',
+          author: 'old author value',
+          genre: 'old genre value',
+          read: false,
+          save: sinon.spy()
+        },
+        params: {
+          bookId: book._v
+        },
+        body: {
+          title: book.title
+        }
+      };
+      bookController.updateOne(req, res);
+      expect(MockBook.findById.args[0][0]).to.equal(book._v);
+      expect(req.book.save.calledOnce);
+      expect(req.book.title).to.be.equal(book.title);
+      expect(req.book.author).to.be.equal(req.book.author);
+      expect(req.book.genre).to.be.equal(req.book.genre);
+      expect(req.book.read).to.be.equal(req.book.read);
+    });
   });
 });
-
