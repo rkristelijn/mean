@@ -22,6 +22,13 @@ Steps done:
 - time build, better output
 - watch files and run npm-run-all on change
 - added tests with sinon
+- added findById + test
+
+Working on:
+- REST API: CRUD operations for service
+
+todo:
+- add sinon test for [chained function calls](https://stackoverflow.com/questions/37948135/how-do-i-stub-a-chain-of-methods-in-sinon)
 
 ## The plan
 
