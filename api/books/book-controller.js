@@ -23,7 +23,8 @@ let bookController = function (Book) {
         books.forEach(element => {
           let newBook = element.toJSON();
           newBook.links = {};
-          newBook.links.self = 'http://' + req.headers.host + '/api/books/' + newBook._id;
+          newBook.links.self = 'http://'
+            + req.headers.host + '/api/books/' + newBook._id;
           returnBooks.push(newBook);
         });
         res.json(returnBooks);
@@ -32,12 +33,23 @@ let bookController = function (Book) {
   };
 
   let getOne = function (req, res) {
-    let returnBook = req.book.toJSON();
-    returnBook.links = {};
-    returnBook.links.filterByThisGenre = 'http://'
-    + req.headers.host + '/api/books/?genre='
-    + returnBook.genre.replace(' ', '%20');
-    res.json(returnBook);
+    if(!req.params.bookId) {
+      res.status(400);
+      res.send('bookId is required');
+    }
+    Book.findById(req.params.bookId, function (err, book) {
+      if (err) {
+        res.status(500).send(err);
+      } else if (book) {
+        book.links = {};
+        book.ook.links.filterByThisGenre = 'http://'
+          + req.headers.host + '/api/books/?genre='
+          + book.genre.replace(' ', '%20');
+        res.json(book);
+      } else {
+        res.status(404).send('no book found');
+      }
+    });
   };
 
   return {

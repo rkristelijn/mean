@@ -70,6 +70,7 @@ describe('books', () => {
       expect(MockBook.find.args[0][0]).to.deep.equal(req.query);
     });
     it('get: should not allow title as query param', function () {
+      /* eslint-disable no-shadow */
       let MockBook = {
         find: sinon.spy()
       };
@@ -90,5 +91,53 @@ describe('books', () => {
       bookController.get(req, res);
       expect(MockBook.find.args[0][0]).to.deep.equal({});
     });
+    it('get/:id: should pass the id of the book', function () {
+      /* eslint-disable no-shadow */
+      let book = new Book({
+        _v: 'myid',
+        title: 'test',
+        author: 'test',
+        genre: 'test'
+      });
+      let MockBook = {
+        findById: sinon.spy()
+      };
+      let res = {
+        send: sinon.spy(),
+        status: 200,
+        body: book,
+        json: function (passedBook) {
+          this.body = passedBook;
+        }
+      };
+      let bookController = require('./book-controller')(MockBook);
+      let req = {
+        params: {
+          bookId: 'myid'
+        }
+      };
+      bookController.getOne(req, res);
+      expect(MockBook.findById.args[0][0]).to.equal('myid');
+    });
+    it('get/:id: should not allow empty bookId', function () {
+      /* eslint-disable no-shadow */
+      let MockBook = {
+        findById: sinon.spy()
+      };
+      let res = {
+        send: sinon.spy(),
+        status: sinon.spy()
+      };
+      let bookController = require('./book-controller')(MockBook);
+      let req = {
+        params: {
+        }
+      };
+      bookController.getOne(req, res);
+      expect(res.status.calledWith(400)).to.be.equal(
+        true, 'bookId is required ' + res.status.args[0][0]
+      );
+    });
   });
 });
+
