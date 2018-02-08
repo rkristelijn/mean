@@ -1,5 +1,5 @@
-let bookController = function (Book) {
-  let post = function (req, res) {
+let bookController = (Book) => {
+  let _create = (req, res) => {
     let book = new Book(req.body);
     if (!req.body.title) {
       res.status(400);
@@ -10,12 +10,12 @@ let bookController = function (Book) {
       res.send(book);
     }
   };
-  let get = function (req, res) {
+  let _readAll = (req, res) => {
     let query = {};
     if (req.query.genre) {
       query.genre = req.query.genre;
     }
-    Book.find(query, function (err, books) {
+    Book.find(query, (err, books) => {
       if (err) {
         res.status(500).send(err);
       } else {
@@ -31,13 +31,12 @@ let bookController = function (Book) {
       }
     });
   };
-
-  let getOne = function (req, res) {
-    if(!req.params.bookId) {
+  let _readOne = (req, res) => {
+    if (!req.params.bookId) {
       res.status(400);
       res.send('bookId is required');
     }
-    Book.findById(req.params.bookId, function (err, book) {
+    Book.findById(req.params.bookId, (err, book) => {
       if (err) {
         res.status(500).send(err);
       } else if (book) {
@@ -51,11 +50,25 @@ let bookController = function (Book) {
       }
     });
   };
-
+  let _update = (req, res) => {
+    this._readOne(req);
+    req.book.title = req.body.title;
+    req.book.author = req.body.author;
+    req.book.genre = req.body.genre;
+    req.book.read = req.body.read;
+    req.book.save((err) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json(req.book);
+      }
+    });
+  };
   return {
-    getOne: getOne,
-    post: post,
-    get: get
+    create: _create,
+    readOne: _readOne,
+    readAll: _readAll,
+    update: _update
   };
 };
 module.exports = bookController;

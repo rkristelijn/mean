@@ -177,7 +177,7 @@
     //
     "no-var": 2, // require let or const instead of var (off by default)
     "generator-star-spacing": [2, "before"], // enforce the spacing around the * in generator functions (off by default)
-
+    "prefer-arrow-callback": 1,
     //
     // Legacy
     //

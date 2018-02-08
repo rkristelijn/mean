@@ -1,7 +1,7 @@
 const express = require('express');
 const Book = require('./book-model');
 
-let routes = function () {
+let routes = () => {
   let bookRouter = express.Router();
 
   let bookController = require('./book-controller')(Book);

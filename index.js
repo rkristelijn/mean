@@ -21,7 +21,7 @@ let db = mongoose.connect(dblink, (connectionErr, con) => {
     );
   }
   let admin = new mongoose.mongo.Admin(mongoose.connection.db);
-  admin.buildInfo(function (adminErr, info) {
+  admin.buildInfo((adminErr, info) => {
     let version = info.version;
     /* eslint-disable no-console */
     console.log(

@@ -25,8 +25,8 @@ describe('books', () => {
     });
   });
 
-  describe('book-controller', function () {
-    it('post: should not allow an empty title', function () {
+  describe('book-controller', () => {
+    it('create: should not allow an empty title', () => {
       let MockBook = function () {
         this.save = function () { };
       };
@@ -41,14 +41,14 @@ describe('books', () => {
       };
 
       let bookController = require('./book-controller')(MockBook);
-      bookController.post(req, res);
+      bookController.create(req, res);
 
       expect(res.status.calledWith(400)).to.be.equal(
         true, 'Bad Status ' + res.status.args[0][0]
       );
       expect(res.send.calledWith('Title is required')).to.be.equal(true);
     });
-    it('get: should allow genre as query param', function () {
+    it('readAll: should allow genre as query param', () => {
       let MockBook = {
         find: sinon.spy()
       };
@@ -66,10 +66,10 @@ describe('books', () => {
           genre: 'Historical Fiction'
         }
       };
-      bookController.get(req, res);
+      bookController.readAll(req, res);
       expect(MockBook.find.args[0][0]).to.deep.equal(req.query);
     });
-    it('get: should not allow title as query param', function () {
+    it('readAll: should not allow title as query param', () => {
       /* eslint-disable no-shadow */
       let MockBook = {
         find: sinon.spy()
@@ -88,10 +88,10 @@ describe('books', () => {
           title: 'Historical Fiction'
         }
       };
-      bookController.get(req, res);
+      bookController.readAll(req, res);
       expect(MockBook.find.args[0][0]).to.deep.equal({});
     });
-    it('get/:id: should pass the id of the book', function () {
+    it('readOne: should pass the id of the book', () => {
       /* eslint-disable no-shadow */
       let book = new Book({
         _v: 'myid',
@@ -116,10 +116,10 @@ describe('books', () => {
           bookId: 'myid'
         }
       };
-      bookController.getOne(req, res);
+      bookController.readOne(req, res);
       expect(MockBook.findById.args[0][0]).to.equal('myid');
     });
-    it('get/:id: should not allow empty bookId', function () {
+    it('readOne: should not allow empty bookId', () => {
       /* eslint-disable no-shadow */
       let MockBook = {
         findById: sinon.spy()
@@ -133,7 +133,7 @@ describe('books', () => {
         params: {
         }
       };
-      bookController.getOne(req, res);
+      bookController.readOne(req, res);
       expect(res.status.calledWith(400)).to.be.equal(
         true, 'bookId is required ' + res.status.args[0][0]
       );
