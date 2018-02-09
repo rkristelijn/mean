@@ -23,12 +23,15 @@ Steps done:
 - watch files and run npm-run-all on change
 - added tests with sinon
 - added findById + test
+- REST API: CRUD operations for service - get, post, put, patch, delete
 
 Working on:
-- REST API: CRUD operations for service
+- testing routes
 
 todo:
 - add sinon test for [chained function calls](https://stackoverflow.com/questions/37948135/how-do-i-stub-a-chain-of-methods-in-sinon)
+- fix tightly coupled http and controller
+- optimize HATEOS
 
 ## The plan
 

@@ -6,8 +6,13 @@ let bookController = (Book) => {
       res.send('Title is required');
     } else {
       book.save();
+      let returnBook = Object.assign({}, book._doc);
+      returnBook.links = {};
+      returnBook.links.filterByThisGenre = `${req.protocol}://${req.headers.host}`
+        + '/api/books?genre='
+        + book.genre.replace(' ', '%20');
       res.status(201);
-      res.send(book);
+      res.json(returnBook);
     }
   };
   let _readAll = (req, res) => {
@@ -40,11 +45,12 @@ let bookController = (Book) => {
       if (err) {
         res.status(500).send(err);
       } else if (book) {
-        book.links = {};
-        book.ook.links.filterByThisGenre = 'http://'
-          + req.headers.host + '/api/books/?genre='
+        let returnBook = Object.assign({}, book._doc);
+        returnBook.links = {};
+        returnBook.links.filterByThisGenre = `${req.protocol}://${req.headers.host}`
+          + '/api/books?genre='
           + book.genre.replace(' ', '%20');
-        res.json(book);
+        res.json(returnBook);
       } else {
         res.status(404).send('no book found');
       }
@@ -52,12 +58,18 @@ let bookController = (Book) => {
   };
   let _updateOne = (req, res) => {
     _readOne(req, res);
-    if (req.book.title) {
+    if (req.body.title) {
       req.book.title = req.body.title;
     }
-    req.book.author = req.body.author;
-    req.book.genre = req.body.genre;
-    req.book.read = req.body.read;
+    if (req.body.author) {
+      req.book.author = req.body.author;
+    }
+    if (req.body.genre) {
+      req.book.genre = req.body.genre;
+    }
+    if (req.body.read) {
+      req.book.read = req.body.read;
+    }
     req.book.save((err) => {
       if (err) {
         res.status(500).send(err);
@@ -66,12 +78,25 @@ let bookController = (Book) => {
       }
     });
   };
+  let _deleteOne = (req, res) => {
+    _readOne(req, res);
+    req.book.remove((err) => {
+      if (err) {
+        res.status(500);
+        res.send(err);
+      } else {
+        res.status(204);
+        res.send('Removed');
+      }
+    });
+  };
 
   return {
     create: _create,
     readOne: _readOne,
     readAll: _readAll,
-    updateOne: _updateOne
+    updateOne: _updateOne,
+    deleteOne: _deleteOne
   };
 };
 module.exports = bookController;

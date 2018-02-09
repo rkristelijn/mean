@@ -1,4 +1,5 @@
 const express = require('express');
+let bookRouter = require('./books/book-router')();
 
 let routes = () => {
   let apiRouter = express.Router();
@@ -6,6 +7,15 @@ let routes = () => {
     next();
   });
 
+  apiRouter.get('/', (req, res) => {
+    res.send({
+      books: {
+        links: `${req.protocol}://${req.headers.host}/api/books`
+      }
+    });
+  });
+
+  apiRouter.use('/books', bookRouter);
   return apiRouter;
 };
 
