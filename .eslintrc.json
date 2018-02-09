@@ -169,6 +169,7 @@
     "space-unary-ops": [1, {"words": true, "nonwords": false}], // Require or disallow spaces before/after unary operators (words on by default, nonwords off by default)
     //"spaced-line-comment": [1, "always"], // require or disallow a space immediately following the // in a line comment (off by default)
     "wrap-regex": 0, // require regex literals to be wrapped in parentheses (off by default)
+    "no-warning-comments": [1, { "terms": ["todo"], "location": "anywhere" }],
 
     //
     // ECMAScript 6
@@ -189,8 +190,8 @@
     "max-len": [2, 100, 2], // specify the maximum length of a line in your program (off by default)
     "max-params": [2, 5], // limits the number of parameters that can be used in the function declaration. (off by default)
     "max-statements": 0, // specify the maximum number of statement allowed in a function (off by default)
-    "no-bitwise": 0, // disallow use of bitwise operators (off by default)
-    "no-plusplus": 2 // disallow use of unary operators, ++ and -- (off by default)
+    "no-bitwise": 0 // disallow use of bitwise operators (off by default)
+    //"no-plusplus": 2 // disallow use of unary operators, ++ and -- (off by default)
   },
   "parserOptions": {
       "sourceType": "module"

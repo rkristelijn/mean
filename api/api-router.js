@@ -1,5 +1,7 @@
 const express = require('express');
-let bookRouter = require('./books/book-router')();
+const Book = require('./books/book-model');
+let bookController = require('./books/book-controller')(Book);
+let bookRouter = require('./books/book-router')(bookController);
 
 let routes = () => {
   let apiRouter = express.Router();
