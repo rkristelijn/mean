@@ -16,7 +16,6 @@ let bookController = (Book) => {
     }
   };
   let _readAll = (req, res) => {
-    //console.log("_readAll", req);
     let query = {};
     if (req.query.genre) {
       query.genre = req.query.genre;

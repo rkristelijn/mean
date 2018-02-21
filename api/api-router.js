@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const Book = require('./books/book-model');
 let bookController = require('./books/book-controller')(Book);

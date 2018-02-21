@@ -13,7 +13,7 @@
   "scripts": {
     "start": "npm run watch start:parallel:refresh",
     "start:parallel:norefresh": "npm-run-all --parallel test:security test:unit lint serve:nodemon | gnomon --type=elapsed-total",
-    "start:parallel:refresh": "npm-run-all --parallel test:security test:unit lint serve | gnomon --type=elapsed-total",
+    "start:parallel:refresh": "npm-run-all --parallel test:security test:unit test:integration lint | gnomon --type=elapsed-total",
     "poststart:parallel:refresh": "echo \"[x] All done.\"",
     "nodemon:": "nodemon index.js --exec 'npm run parellel' | gnomon --type=elapsed-total",
     "parellel": "npm-run-all --parallel test:security test:unit lint",
@@ -22,6 +22,9 @@
     "pretest:unit": "echo \"Unit testing...\"",
     "test:unit": "mocha '**/*.unit.test.js' --color",
     "posttest:unit": "echo \"[x] Unit testing done.\"",
+    "pretest:integration": "echo \"Integration testing...\"",
+    "test:integration": "mocha '**/*.integration.test.js' --color",
+    "posttest:integration": "echo \"[x] Integration testing done.\" npm run serve",
     "pretest:security": "echo \"Security testing...\"",
     "test:security": "nsp check --reporter checkstyle --color",
     "posttest:security": "echo \"[x] Security testing done.\"",

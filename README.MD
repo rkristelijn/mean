@@ -100,3 +100,5 @@ Cpi@pidev:~/mean $ npm start --silent
 - [Running node in background](https://stackoverflow.com/questions/4018154/how-do-i-run-a-node-js-app-as-a-background-service/29042953#29042953)
 - [Chalk colors](https://www.npmjs.com/package/chalk#256-and-truecolor-color-support)
 - [Dockerize](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/)
+- [supertest api](https://github.com/visionmedia/supertest#api)
+- [presentation about supertest](http://willi.am/node-mocha-supertest/)
