@@ -38,45 +38,56 @@ let bookController = (Book) => {
   };
   let _readOne = (req, res) => {
     if (!req.params.bookId) {
+      //console.log('_readOne', 'bookId is required');
       res.status(400);
       res.send('bookId is required');
+    } else if (!req.params.bookId.match(/^[0-9a-fA-F]{24}$/)) {
+      //console.log('_readOne', `Cast to ObjectId failed for value ${req.params.bookId}`);
+      res.status(400);
+      res.send(`Cast to ObjectId failed for value ${req.params.bookId}`);
+    } else {
+      Book.findById(req.params.bookId, (err, book) => {
+        if (err) {
+          //console.log('_readOne', 'cannot find book', err);
+          res.status(500).send(err);
+        } else if (book) {
+          let returnBook = Object.assign({}, book._doc);
+          returnBook.links = {};
+          returnBook.links.filterByThisGenre = `${req.protocol}://${req.headers.host}`
+            + '/api/books?genre='
+            + book.genre.replace(' ', '%20');
+          res.json(returnBook);
+        } else {
+          res.status(404).send('no book found');
+        }
+      });
     }
-    Book.findById(req.params.bookId, (err, book) => {
-      if (err) {
-        res.status(500).send(err);
-      } else if (book) {
-        let returnBook = Object.assign({}, book._doc);
-        returnBook.links = {};
-        returnBook.links.filterByThisGenre = `${req.protocol}://${req.headers.host}`
-          + '/api/books?genre='
-          + book.genre.replace(' ', '%20');
-        res.json(returnBook);
-      } else {
-        res.status(404).send('no book found');
-      }
-    });
   };
   let _updateOne = (req, res) => {
     _readOne(req, res);
-    if (req.body.title) {
-      req.book.title = req.body.title;
-    }
-    if (req.body.author) {
-      req.book.author = req.body.author;
-    }
-    if (req.body.genre) {
-      req.book.genre = req.body.genre;
-    }
-    if (req.body.read) {
-      req.book.read = req.body.read;
-    }
-    req.book.save((err) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.json(req.book);
+    if (!req.book) {
+      res.status(404).send(`Cannot find book ${req.params.bookId}`);
+    } else {
+      if (req.body.title) {
+        req.book.title = req.body.title;
       }
-    });
+      if (req.body.author) {
+        req.book.author = req.body.author;
+      }
+      if (req.body.genre) {
+        req.book.genre = req.body.genre;
+      }
+      if (req.body.read) {
+        req.book.read = req.body.read;
+      }
+      req.book.save((err) => {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          res.json(req.book);
+        }
+      });
+    }
   };
   let _deleteOne = (req, res) => {
     _readOne(req, res);

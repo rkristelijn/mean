@@ -102,7 +102,7 @@ describe('books', () => {
     it('readOne: should pass the id of the book', (done) => {
       /* eslint-disable no-shadow */
       let book = new Book({
-        _v: 'myid',
+        _v: '000000000000000000000001',
         title: 'test',
         author: 'test',
         genre: 'test'
@@ -121,11 +121,11 @@ describe('books', () => {
       let bookController = require('./book-controller')(MockBook);
       let req = {
         params: {
-          bookId: 'myid'
+          bookId: '000000000000000000000001'
         }
       };
       bookController.readOne(req, res);
-      expect(MockBook.findById.args[0][0]).to.equal('myid');
+      expect(MockBook.findById.args[0][0]).to.equal('000000000000000000000001');
       done();
     });
     it('readOne: should not allow empty bookId', (done) => {
@@ -151,7 +151,7 @@ describe('books', () => {
     it('updateOne: should not allow empty bookId', (done) => {
       /* eslint-disable no-shadow */
       let book = {
-        _v: 'myId',
+        _v: '000000000000000000000001',
         title: 'Opvoeden in een gestoorde wereld',
         author: 'Eugenie van Ruitenbeek, Jan Nouwen',
         genre: 'Parenting'
@@ -188,7 +188,7 @@ describe('books', () => {
     it('updateOne: should update all values of the book', (done) => {
       /* eslint-disable no-shadow */
       let book = {
-        _v: 'myId',
+        _v: '000000000000000000000001',
         title: 'Opvoeden in een gestoorde wereld',
         author: 'Eugenie van Ruitenbeek, Jan Nouwen',
         genre: 'Parenting',
@@ -234,7 +234,7 @@ describe('books', () => {
     it('updateOne: should only update title', (done) => {
       /* eslint-disable no-shadow */
       let book = {
-        _v: 'myId',
+        _v: '000000000000000000000001',
         title: 'Opvoeden in een gestoorde wereld',
         author: 'Eugenie van Ruitenbeek, Jan Nouwen',
         genre: 'Parenting',
@@ -277,7 +277,7 @@ describe('books', () => {
     it('updateOne: should only update author', (done) => {
       /* eslint-disable no-shadow */
       let book = {
-        _v: 'myId',
+        _v: '000000000000000000000001',
         title: 'Opvoeden in een gestoorde wereld',
         author: 'Eugenie van Ruitenbeek, Jan Nouwen',
         genre: 'Parenting',
@@ -320,7 +320,7 @@ describe('books', () => {
     it('updateOne: should only update genre', (done) => {
       /* eslint-disable no-shadow */
       let book = {
-        _v: 'myId',
+        _v: '000000000000000000000001',
         title: 'Opvoeden in een gestoorde wereld',
         author: 'Eugenie van Ruitenbeek, Jan Nouwen',
         genre: 'Parenting',
@@ -363,7 +363,7 @@ describe('books', () => {
     it('updateOne: should only update read', (done) => {
       /* eslint-disable no-shadow */
       let book = {
-        _v: 'myId',
+        _v: '000000000000000000000001',
         title: 'Opvoeden in een gestoorde wereld',
         author: 'Eugenie van Ruitenbeek, Jan Nouwen',
         genre: 'Parenting',
@@ -415,14 +415,14 @@ describe('books', () => {
       let bookController = require('./book-controller')(MockBook);
       let req = {
         params: {
-          bookId: '1234'
+          bookId: '000000000000000000000001'
         },
         book: {
           remove: sinon.spy()
         }
       };
       bookController.deleteOne(req, res);
-      expect(MockBook.findById.args[0][0]).to.equal('1234');
+      expect(MockBook.findById.args[0][0]).to.equal('000000000000000000000001');
       expect(req.book.remove.calledOnce);
       expect(res.status.calledWith(204)).to.be.equal(
         false, 'Removed'
@@ -464,10 +464,10 @@ describe('books', () => {
 
       mockApp.invoke('get', '/', req, res);
       mockApp.invoke('post', '/', req, res);
-      mockApp.invoke('get', '/hi', req, res);
-      mockApp.invoke('put', '/hi', req, res);
-      mockApp.invoke('patch', '/hi', req, res);
-      mockApp.invoke('delete', '/hi', req, res);
+      mockApp.invoke('get', '/000000000000000000000001', req, res);
+      mockApp.invoke('put', '/000000000000000000000001', req, res);
+      mockApp.invoke('patch', '/000000000000000000000001', req, res);
+      mockApp.invoke('delete', '/000000000000000000000001', req, res);
 
       expect(createCalled).equals(1);
       expect(readAllCalled).equals(1);

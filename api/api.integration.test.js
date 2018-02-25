@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-let app = require('../');
+let app = require('../app');
 let request = require('supertest')(app);
 
 describe('Basic api integation testing with Supertest, Mocha and Chai...', () => {
