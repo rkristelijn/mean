@@ -29,7 +29,7 @@
     "test:security": "nsp check --reporter checkstyle --color",
     "posttest:security": "echo \"[x] Security testing done.\"",
     "prelint": "echo \"Linting...\"",
-    "lint": "eslint . --color",
+    "lint": "eslint . --color --fix",
     "postlint": "echo \"[x] Linting done.\"",
     "start:fast": "nodemon index.js",
     "watch": "npm-watch"

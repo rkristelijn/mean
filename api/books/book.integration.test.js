@@ -10,7 +10,7 @@ describe('Book integation testing with Supertest, Mocha and Chai...', (done) => 
     title: uuid.new(),
     author: uuid.new(),
     genre: uuid.new()
-  }
+  };
 
   before((done) => {
     server = app.listen(0, done);
@@ -68,7 +68,7 @@ describe('Book integation testing with Supertest, Mocha and Chai...', (done) => 
       })
       .end(done);
   });
-  it(`get "/api/books/:id" should return a book`, (done) => {
+  it('get "/api/books/:id" should return a book', (done) => {
     request
       .get(`/api/books/${id}`)
       .expect(200)
@@ -78,19 +78,19 @@ describe('Book integation testing with Supertest, Mocha and Chai...', (done) => 
       })
       .end(done);
   });
-  it(`get "/api/books/:id" should return a 400 on nonObjectId`, (done) => {
+  it('get "/api/books/:id" should return a 400 on nonObjectId', (done) => {
     request
-      .get(`/api/books/allyourbase`)
+      .get('/api/books/allyourbase')
       .expect(400)
       .end(done);
   });
-  it(`get "/api/books/:id" should NOT return a book`, (done) => {
+  it('get "/api/books/:id" should NOT return a book', (done) => {
     request
-      .get(`/api/books/000000000000000000000001`)
+      .get('/api/books/000000000000000000000001')
       .expect(404)
       .end(done);
   });
-  xit(`put "/api/books/:id" should return an updated book`, (done) => {
+  xit('put "/api/books/:id" should return an updated book', (done) => {
     request
       .put(`/api/books/${id}`)
       .set('Content-Type', 'application/json')
