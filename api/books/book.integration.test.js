@@ -3,7 +3,7 @@ const app = require('../../app');
 const request = require('supertest')(app);
 const uuid = require('../shared/uuid')();
 
-describe('Book integation testing with Supertest, Mocha and Chai...', (done) => {
+describe('Book integation testing with Supertest, Mocha and Chai...', () => {
   let server;
   let id;
   let book = {
@@ -64,7 +64,7 @@ describe('Book integation testing with Supertest, Mocha and Chai...', (done) => 
         expect(response.body.genre).to.equal(book.genre);
         expect(response.body.read).to.equal(false);
 
-        id = response.body._id; //save the id for next tests
+        id = response.body._id;
       })
       .end(done);
   });
@@ -99,7 +99,6 @@ describe('Book integation testing with Supertest, Mocha and Chai...', (done) => 
       })
       .expect(200)
       .expect(response => {
-        console.log(response.body);
         expect(response.body).to.have.property('_id');
         expect(response.body._id).to.equal(id);
         expect(response.body.title).to.equal(book.title);
