@@ -196,7 +196,7 @@ describe('books', () => {
       };
 
       let MockBook = {
-        findById: (id) => {
+        findById: () => {
           return {
             book: {
               title: 'old title value',

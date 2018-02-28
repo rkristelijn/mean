@@ -38,14 +38,6 @@ app.use(bodyParser.json());
 let apiRouter = require('./api/api-router')();
 app.use('/api', apiRouter);
 
-// app.listen(PORT, HOST, () => {
-//   /* eslint-disable no-console */
-//   console.log(
-//     chalk.green(`[>] Node ${process.version}: REST api running on `) +
-//     chalk.blueBright(`http://${HOST}:${PORT}`)
-//   );
-// });
-
 app.get('/', (req, res) => {
   res.send('Hello world\n');
 });
