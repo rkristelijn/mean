@@ -10,7 +10,7 @@ describe('Basic api integation testing with Supertest, Mocha and Chai...', () =>
       .expect('Hello world\n')
       .end(done);
   });
-  it('get "/api" Should return HATEOS url"', (done) => {
+  xit('get "/api" Should return HATEOS url"', (done) => {
     request
       .get('/api')
       .expect(200)

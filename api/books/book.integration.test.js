@@ -90,7 +90,7 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
       .expect(404)
       .end(done);
   });
-  xit('put "/api/books/:id" should return an updated book', (done) => {
+  it('put "/api/books/:id" should return an updated book', (done) => {
     request
       .put(`/api/books/${id}`)
       .set('Content-Type', 'application/json')
