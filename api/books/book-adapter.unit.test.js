@@ -13,7 +13,7 @@ before((done) => {
     mongoose.connect('mongodb://localhost/bookAPI',
       (err) => {
         if (!err) {
-          console.log('opened mock db');
+          //console.log('opened mock db');
         }
         done(err);
       });
@@ -21,9 +21,9 @@ before((done) => {
 });
 
 after((done) => {
-  console.log('closing mock db');
+  //console.log('closing mock db');
   mongoose.connection.close(() => {
-    console.log('closed mock db');
+    //console.log('closed mock db');
     done();
   });
 });
@@ -137,8 +137,7 @@ describe('book-adapter', () => {
         bookAdapter.read({ id: book.id }, (err) => {
           expect(err).to.equal('Book not found: ' + book.id);
         }, bookDeleted => {
-          expect(bookDeleted).to.be('undefined');
-          done();
+          expect(bookDeleted).to.equal(null);
         });
         bookAdapter.query({}, err => {
           expect(err).to.be('undefined');
@@ -157,8 +156,8 @@ describe('book-adapter', () => {
         bookAdapter.read({ id: book.id }, (err) => {
           expect(err).to.equal('Book not found: ' + book.id);
         }, bookDeleted => {
-          expect(bookDeleted).to.be('undefined');
-          done();
+          expect(bookDeleted).to.equal(null);
+          //done();
         });
         bookAdapter.query({}, err => {
           expect(err).to.be('undefined');
