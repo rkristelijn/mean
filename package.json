@@ -13,7 +13,7 @@
   "scripts": {
     "start": "npm run watch start:parallel:refresh",
     "start:parallel:norefresh": "npm-run-all --parallel test:security test:unit lint serve:nodemon | gnomon --type=elapsed-total",
-    "start:parallel:refresh": "npm-run-all --parallel test:unit lint serve | gnomon --type=elapsed-total",
+    "start:parallel:refresh": "npm-run-all --parallel test:unit test:integration lint serve | gnomon --type=elapsed-total",
     "nodemon:": "nodemon index.js --exec 'npm run parellel' | gnomon --type=elapsed-total",
     "parellel": "npm-run-all --parallel test:security test:unit lint",
     "serve:nodemon": "nodemon index.js",
