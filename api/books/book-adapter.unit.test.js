@@ -13,7 +13,7 @@ before((done) => {
     mongoose.connect('mongodb://localhost/bookAPI',
       (err) => {
         if (!err) {
-          //console.log('opened mock db');
+          console.log('opened mock db');
         }
         done(err);
       });
@@ -21,9 +21,9 @@ before((done) => {
 });
 
 after((done) => {
-  //console.log('closing mock db');
+  console.log('closing mock db');
   mongoose.connection.close(() => {
-    //console.log('closed mock db');
+    console.log('closed mock db');
     done();
   });
 });

@@ -2,7 +2,8 @@
 
 const express = require('express');
 const Book = require('./books/book-model');
-let bookController = require('./books/book-controller')(Book);
+let bookAdapter = require('./books/book-adapter')(Book);
+let bookController = require('./books/book-controller')(bookAdapter);
 let bookRouter = require('./books/book-router')(bookController);
 
 let routes = () => {

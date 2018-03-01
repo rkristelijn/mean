@@ -31,10 +31,12 @@ let bookAdapter = (Book) => {
         bookAdapterErr('Cannot find book: ' + err);
         return;
       }
+	    /*
       if (!bookResult) {
         bookAdapterErr('Book not found: ' + id);
         return;
       }
+      */
       bookAdapterSuccess(bookResult);
     });
   };
