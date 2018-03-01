@@ -4,6 +4,7 @@ const expect = require('chai').expect;
 const Book = require('./book-model');
 const mongoose = require('mongoose');
 const Mockgoose = require('mockgoose').Mockgoose;
+//todo: Mockgoose doesn't run on the pi: unsupported architecture, ia32 and x64 are the only valid options
 const mockgoose = new Mockgoose(mongoose);
 
 const bookAdapter = require('./book-adapter')(Book);
