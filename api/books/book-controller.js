@@ -34,12 +34,12 @@ let bookController = (bookAdapter) => {
       res.status(400);
       res.end(err);
     }, book => {
-	    if(!book) {
+      if (!book) {
         res.status(404);
         res.end('Not found');
       } else {
-		    res.json(book);
-	    }
+        res.json(book);
+      }
     });
   };
   let _updateOne = (req, res) => {

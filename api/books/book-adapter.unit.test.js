@@ -135,7 +135,7 @@ describe('book-adapter', () => {
         done();
       }, book => {
         bookAdapter.read({ id: book.id }, (err) => {
-          expect(err).to.equal('Book not found: '+book.id);
+          expect(err).to.equal('Book not found: ' + book.id);
         }, bookDeleted => {
           expect(bookDeleted).to.be('undefined');
           done();
@@ -155,7 +155,7 @@ describe('book-adapter', () => {
         done();
       }, book => {
         bookAdapter.read({ id: book.id }, (err) => {
-          expect(err).to.equal('Book not found: '+book.id);
+          expect(err).to.equal('Book not found: ' + book.id);
         }, bookDeleted => {
           expect(bookDeleted).to.be('undefined');
           done();
