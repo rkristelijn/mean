@@ -11,11 +11,6 @@ const bookModel = new Schema({
   }
 });
 
-// bookModel.pre('remove', (next) => {
-//   console.log('deleting from bookModel');
-//   next();
-// });
-
 module.exports = {
   Book: mongoose.model('Book', bookModel),
   bookModel: bookModel

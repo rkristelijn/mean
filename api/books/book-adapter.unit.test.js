@@ -4,62 +4,32 @@ const expect = require('chai').expect;
 const bookModel = require('./book-model').bookModel;
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const extend = require('mongoose-schema-extend');
 const Mockgoose = require('mockgoose').Mockgoose;
 //todo: Mockgoose doesn't run on the pi: unsupported architecture,
 // ia32 and x64 are the only valid options
 const mockgoose = new Mockgoose(mongoose);
 
-// hookSchema = new Schema({});
-// hookSchema.pre('remove', (next) => {
-//   console.log('deleting from bookModel');
-//   next();
-// });
-
-let hookBook = bookModel.extend({});
-
-// HookBook = () => {
-//   let schema = {};
-//   Object.keys(Book).forEach((key) => {
-//     schema[key] = HookBook[key];
-//   });
-// };
-
-//let HookBook = Object.assign({}, Book, hookSchema);
-
-hookBook.pre('remove', (next) => {
-  //console.log('if',hookBook);
-  if (hookBook.title === 'Turbo Man') {
-    //console.log('if',hookBook);
-    throw new Error('Need to get a Turbo Man for Christmas');
-  } else {
-    console.log('Still no Turbo Man');
+bookModel.pre('remove', function (next) {
+  if (this.title == 'Turbo Man') {
+    let err = new Error('Need to get a Turbo Man for Christmas');
+    next(err);
   }
   next();
 });
-//mongoose.model('Book', bookModel)
-// Book.pre('delete', (next) => {
-//   console.log('hook');
 
-
-const bookAdapter = require('./book-adapter')(mongoose.model('TestBook', hookBook));
+const bookAdapter = require('./book-adapter')(mongoose.model('TestBook', bookModel));
 
 before((done) => {
   mockgoose.prepareStorage().then(() => {
     mongoose.connect('mongodb://localhost/bookAPI',
       (err) => {
-        if (!err) {
-          //console.log('opened mock db');
-        }
         done(err);
       });
   });
 });
 
 after((done) => {
-  //console.log('closing mock db');
   mongoose.connection.close(() => {
-    //console.log('closed mock db');
     done();
   });
 });
@@ -193,7 +163,6 @@ describe('book-adapter', () => {
           expect(err).to.equal('Book not found: ' + book.id);
         }, bookDeleted => {
           expect(bookDeleted).to.equal(null);
-          //done();
         });
         bookAdapter.query({}, err => {
           expect(err).to.be('undefined');
@@ -204,19 +173,36 @@ describe('book-adapter', () => {
         });
       });
     });
-    it('Should raise error on delete', (done) => {
+    it('Should raise Turbo Man error on delete', (done) => {
       bookAdapter.create({
         title: 'Turbo Man'
       }, (err) => {
       }, book => {
-        book.delete({ id: book._id }, err => {
-          console.log("ERRORRRRR", err);
-          expect(err).to.be('undefined');
+        bookAdapter.delete({ id: book.id }, err => {
+          expect(err).to.equal('Cannot remove book: Error: Need to get a Turbo Man for Christmas')
           done();
-        }, () => {
-          console.log("error: succeeded");
+        }, (book) => {
+          expect(book).to.be('undefined');
           done();
         });
+      });
+    });
+    it('Should raise not-found-error on delete', (done) => {
+      bookAdapter.delete({ id: '000000000000000000000001' }, err => {
+        expect(err).to.equal('Cannot find book: 000000000000000000000001')
+        done();
+      }, (book) => {
+        expect(book).to.be('undefined');
+        done();
+      });
+    });
+    it('Should raise non-Id on delete', (done) => {
+      bookAdapter.delete({ id: 'dus' }, err => {
+        expect(err).to.equal('Cast to ObjectId failed for value: dus')
+        done();
+      }, (book) => {
+        expect(book).to.be('undefined');
+        done();
       });
     });
   });

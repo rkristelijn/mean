@@ -64,17 +64,13 @@ let bookAdapter = (Book) => {
     }
 
     Book.findById(book.id, (err, bookResult) => {
-      if (err) {
-        bookAdapterErr('Cannot find book: ' + err);
+      if (!bookResult) {
+        bookAdapterErr('Cannot find book: ' + book.id);
         return;
       }
-      if(!bookResult) {
-        bookAdapterErr('Cannot find book: ' + err);
-        return;
-      }
+
       bookResult.remove((err) => {
         if (err) {
-          console.log('we are in error');
           bookAdapterErr('Cannot remove book: ' + err);
           return;
         }
