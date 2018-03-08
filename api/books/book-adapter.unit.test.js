@@ -205,43 +205,11 @@ describe('book-adapter', () => {
       });
     });
     it('Should raise error on delete', (done) => {
-      // Book.pre('remove', (next) => {
-      //   console.log('deleting from bookModel');
-      //   next();
-      // });
-      // Book.static('delete', (name, callback) => {
-      //   console.log("HOOKS");
-      // });
-      // Book.delete = (next) => {
-      //   console.log('PROTOTYPE');
-      //   next();
-      // };
-      // let mongoose = {
-      //   connect: () => {
-      //     return {
-      //       on: (eventName, callback) => {
-      //         if(eventName === 'error') {Book.delete = (next) => {
-      //   console.log('PROTOTYPE');
-      //   next();
-      // };
-      //           console.log('mock...');
-      //           callback('Some error');
-      //         }
-      //       },
-      //       once: () => {}
-      //     };
-      //   }
-      // };
-      // mockgoose.mongooseObj.delete = () => {
-      //   console.log('someone trying to delete...');
-      // };
-      //try {
       bookAdapter.create({
         title: 'Turbo Man'
       }, (err) => {
       }, book => {
-
-        bookAdapter.delete({ id: book._id }, err => {
+        book.delete({ id: book._id }, err => {
           console.log("ERRORRRRR", err);
           expect(err).to.be('undefined');
           done();
@@ -250,10 +218,6 @@ describe('book-adapter', () => {
           done();
         });
       });
-      // } catch (e) {
-      //   console.log('catching...');
-      //   done();
-      // }
     });
   });
 });
