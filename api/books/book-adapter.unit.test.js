@@ -1,5 +1,6 @@
 /* eslint-disable max-nested-callbacks */
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 const expect = require('chai').expect;
 const bookModel = require('./book-model').bookModel;
 const mongoose = require('mongoose');
@@ -10,7 +11,7 @@ const Mockgoose = require('mockgoose').Mockgoose;
 const mockgoose = new Mockgoose(mongoose);
 
 bookModel.pre('remove', function (next) {
-  if (this.title == 'Turbo Man') {
+  if (this.title === 'Turbo Man') {
     let err = new Error('Need to get a Turbo Man for Christmas');
     next(err);
   }
@@ -179,7 +180,7 @@ describe('book-adapter', () => {
       }, (err) => {
       }, book => {
         bookAdapter.delete({ id: book.id }, err => {
-          expect(err).to.equal('Cannot remove book: Error: Need to get a Turbo Man for Christmas')
+          expect(err).to.equal('Cannot remove book: Error: Need to get a Turbo Man for Christmas');
           done();
         }, (book) => {
           expect(book).to.be('undefined');
@@ -189,7 +190,7 @@ describe('book-adapter', () => {
     });
     it('Should raise not-found-error on delete', (done) => {
       bookAdapter.delete({ id: '000000000000000000000001' }, err => {
-        expect(err).to.equal('Cannot find book: 000000000000000000000001')
+        expect(err).to.equal('Cannot find book: 000000000000000000000001');
         done();
       }, (book) => {
         expect(book).to.be('undefined');
@@ -198,7 +199,7 @@ describe('book-adapter', () => {
     });
     it('Should raise non-Id on delete', (done) => {
       bookAdapter.delete({ id: 'dus' }, err => {
-        expect(err).to.equal('Cast to ObjectId failed for value: dus')
+        expect(err).to.equal('Cast to ObjectId failed for value: dus');
         done();
       }, (book) => {
         expect(book).to.be('undefined');

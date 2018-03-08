@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const Book = require('./book-model');
+const Book = require('./book-model').Book;
 const sinon = require('sinon');
 const mockExpress = require('mock-express');
 //const request = require('supertest'); //supertest is only for integration tests

@@ -63,7 +63,7 @@ let bookAdapter = (Book) => {
       return;
     }
 
-    Book.findById(book.id, (err, bookResult) => {
+    Book.findById(book.id, (findErr, bookResult) => {
       if (!bookResult) {
         bookAdapterErr('Cannot find book: ' + book.id);
         return;
