@@ -19,11 +19,13 @@
     "serve:nodemon": "nodemon index.js",
     "serve": "node index.js --color",
     "test:unit": "mocha **/*.unit.test.js --color",
-    "test:integration": "mocha '**/*.integration.test.js' --color",
-    "test:security": "nsp check --reporter checkstyle --color",
+    "test:integration": "mocha '**/*.integration.test.js' --color --exit",
+    "test:security": "nsp check --reporter checkstyle --color --exit",
     "lint": "eslint . --color",
     "start:fast": "nodemon index.js",
-    "watch": "npm-watch"
+    "watch": "npm-watch",
+    "test:integration:codecoverage": "nyc mocha '**/*integration.test.js' --exit",
+    "test:unit:codecoverage": "nyc mocha '**/*unit.test.js' --exit"
   },
   "repository": {
     "type": "git",
@@ -51,9 +53,11 @@
     "mocha": "^5.0.0",
     "mock-express": "^1.2.0",
     "mockgoose": "^7.3.5",
+    "mongoose-schema-extend": "^0.2.2",
     "npm-run-all": "^4.1.2",
     "npm-watch": "^0.3.0",
     "nsp": "^3.1.0",
+    "nyc": "^11.4.1",
     "sinon": "^4.4.2",
     "supertest": "^3.0.0"
   }

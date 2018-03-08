@@ -62,13 +62,34 @@ let bookAdapter = (Book) => {
       bookAdapterErr('Cast to ObjectId failed for value: ' + book.id);
       return;
     }
-    Book.remove({ _id: book.id }, (err) => {
+
+    Book.findById(book.id, (err, bookResult) => {
       if (err) {
-        bookAdapterErr('Cannot remove book: ' + err);
+        bookAdapterErr('Cannot find book: ' + err);
         return;
       }
-      bookAdapterSuccess(book);
+      if(!bookResult) {
+        bookAdapterErr('Cannot find book: ' + err);
+        return;
+      }
+      bookResult.remove((err) => {
+        if (err) {
+          console.log('we are in error');
+          bookAdapterErr('Cannot remove book: ' + err);
+          return;
+        }
+        bookAdapterSuccess(book);
+      });
     });
+
+    // Book.remove({ _id: book.id }, (err) => {
+    //   if (err) {
+    //     console.log('we are in error');
+    //     bookAdapterErr('Cannot remove book: ' + err);
+    //     return;
+    //   }
+    //   bookAdapterSuccess(book);
+    // });
   };
   let _query = (query, bookAdapterErr, bookAdapterSuccess) => {
     Book.find(query, (err, books) => {

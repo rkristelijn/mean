@@ -1,13 +1,48 @@
 /* eslint-disable max-nested-callbacks */
 /* eslint-disable no-unused-vars */
 const expect = require('chai').expect;
-const Book = require('./book-model');
+const bookModel = require('./book-model').bookModel;
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const extend = require('mongoose-schema-extend');
 const Mockgoose = require('mockgoose').Mockgoose;
-//todo: Mockgoose doesn't run on the pi: unsupported architecture, ia32 and x64 are the only valid options
+//todo: Mockgoose doesn't run on the pi: unsupported architecture,
+// ia32 and x64 are the only valid options
 const mockgoose = new Mockgoose(mongoose);
 
-const bookAdapter = require('./book-adapter')(Book);
+// hookSchema = new Schema({});
+// hookSchema.pre('remove', (next) => {
+//   console.log('deleting from bookModel');
+//   next();
+// });
+
+let hookBook = bookModel.extend({});
+
+// HookBook = () => {
+//   let schema = {};
+//   Object.keys(Book).forEach((key) => {
+//     schema[key] = HookBook[key];
+//   });
+// };
+
+//let HookBook = Object.assign({}, Book, hookSchema);
+
+hookBook.pre('remove', (next) => {
+  //console.log('if',hookBook);
+  if (hookBook.title === 'Turbo Man') {
+    //console.log('if',hookBook);
+    throw new Error('Need to get a Turbo Man for Christmas');
+  } else {
+    console.log('Still no Turbo Man');
+  }
+  next();
+});
+//mongoose.model('Book', bookModel)
+// Book.pre('delete', (next) => {
+//   console.log('hook');
+
+
+const bookAdapter = require('./book-adapter')(mongoose.model('TestBook', hookBook));
 
 before((done) => {
   mockgoose.prepareStorage().then(() => {
@@ -168,6 +203,57 @@ describe('book-adapter', () => {
           done();
         });
       });
+    });
+    it('Should raise error on delete', (done) => {
+      // Book.pre('remove', (next) => {
+      //   console.log('deleting from bookModel');
+      //   next();
+      // });
+      // Book.static('delete', (name, callback) => {
+      //   console.log("HOOKS");
+      // });
+      // Book.delete = (next) => {
+      //   console.log('PROTOTYPE');
+      //   next();
+      // };
+      // let mongoose = {
+      //   connect: () => {
+      //     return {
+      //       on: (eventName, callback) => {
+      //         if(eventName === 'error') {Book.delete = (next) => {
+      //   console.log('PROTOTYPE');
+      //   next();
+      // };
+      //           console.log('mock...');
+      //           callback('Some error');
+      //         }
+      //       },
+      //       once: () => {}
+      //     };
+      //   }
+      // };
+      // mockgoose.mongooseObj.delete = () => {
+      //   console.log('someone trying to delete...');
+      // };
+      //try {
+      bookAdapter.create({
+        title: 'Turbo Man'
+      }, (err) => {
+      }, book => {
+
+        bookAdapter.delete({ id: book._id }, err => {
+          console.log("ERRORRRRR", err);
+          expect(err).to.be('undefined');
+          done();
+        }, () => {
+          console.log("error: succeeded");
+          done();
+        });
+      });
+      // } catch (e) {
+      //   console.log('catching...');
+      //   done();
+      // }
     });
   });
 });
