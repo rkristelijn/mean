@@ -1,18 +1,51 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
+const okId = '000000000000000000000001';
+const errId = 'FFFFFFFFFFFFFFFFFFFFFFFF';
+
 
 let bookAdapterMock;
 let bookController;
 let req;
 let res;
 
+let sampleBook = {
+  'title': 'The Best Way to Catch a Snake',
+  'author': 'Karma Yeshe Rabgye',
+  'genre': '',
+  'isbn': '1505725410',
+  'language': 'English',
+  'genre': 'personal development',
+  'read': false,
+  '_id': okId,
+  '_v': okId
+};
+
+let templateFunction = (book, bookAdapterErr, bookAdapterSuccess) => {
+  switch (book.id) {
+    case errId:
+      console.log('Oh noo.. User Too Ugly');
+      bookAdapterErr("User Too Ugly");
+      return;
+      break;
+    case okId:
+      console.log('All ok');
+      bookAdapterSuccess(sampleBook);
+      break;
+    default:
+      console.log('Default');
+      bookAdapterSuccess(book);
+      break;
+  }
+};
+
 beforeEach((done) => {
   bookAdapterMock = {
-    create: sinon.spy(),
-    query: sinon.spy(),
-    read: sinon.spy(),
-    update: sinon.spy(),
-    delete: sinon.spy()
+    create: sinon.spy(templateFunction),
+    query: sinon.spy(templateFunction),
+    read: sinon.spy(templateFunction),
+    update: sinon.spy(templateFunction),
+    delete: sinon.spy(templateFunction)
   };
   bookController = require('./book-controller')(bookAdapterMock);
   req = {
@@ -66,11 +99,27 @@ describe('book-controller', () => {
   });
   describe('UpdateOne', () => {
     it('Should update', (done) => {
-      req.body = { id: 'object' };
-      bookController.updateOne(req, res);
-      expect(bookAdapterMock.update.args[0][0]).to.be.deep.equal({ id: 'paramsid' });
+      bookController.updateOne({
+        body: sampleBook,
+        params: {
+          bookId: okId
+        }
+      }, res);
+      expect(bookAdapterMock.update.args[0][0]).has.property('id', okId);
       done();
     });
+    it('Should throw error on mock Adapter', (done) => {
+      bookController.updateOne({
+        body: sampleBook,
+        params: {
+          bookId: errId
+        }
+      }, res);
+      expect(res.status.args[0][0]).to.be.equal(400);
+      expect(res.send.args[0][0]).to.be.equal('User Too Ugly');
+      done();
+    });
+
     it('Should throw error on empty req.params', (done) => {
       req.params = {};
       bookController.updateOne(req, res);
@@ -88,8 +137,24 @@ describe('book-controller', () => {
   });
   describe('DeleteOne', () => {
     it('Should delete', (done) => {
-      bookController.deleteOne(req, res);
-      expect(bookAdapterMock.delete.args[0][0]).to.be.deep.equal({ id: 'paramsid' });
+      bookController.deleteOne({
+        params: {
+          bookId: okId
+        }
+      }, res);
+      expect(bookAdapterMock.delete.args[0][0]).to.be.deep.equal({
+        id: okId
+      });
+      done();
+    });
+    it('Should throw error on mock Adapter', (done) => {
+      bookController.deleteOne({
+        params: {
+          bookId: errId
+        }
+      }, res);
+      expect(res.status.args[0][0]).to.be.equal(400);
+      expect(res.send.args[0][0]).to.be.equal('User Too Ugly');
       done();
     });
     it('Should throw error on empty req.params', (done) => {
