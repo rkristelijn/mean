@@ -1,3 +1,4 @@
+//todo: know how to use res.send and res.end
 let bookController = (bookAdapter) => {
   let _hasBookId = (req, res) => {
     if (!req.params || !req.params.bookId) {

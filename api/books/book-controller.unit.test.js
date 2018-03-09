@@ -2,12 +2,15 @@ const expect = require('chai').expect;
 const sinon = require('sinon');
 const okId = '000000000000000000000001';
 const errId = 'FFFFFFFFFFFFFFFFFFFFFFFF';
+const notFoundId = '535cf8e3df3aaa723fc9cad1';
 
 
 let bookAdapterMock;
 let bookController;
 let req;
 let res;
+
+let forceError = false;
 
 let sampleBook = {
   'title': 'The Best Way to Catch a Snake',
@@ -22,18 +25,27 @@ let sampleBook = {
 };
 
 let templateFunction = (book, bookAdapterErr, bookAdapterSuccess) => {
+  if(forceError) {
+    forceError = false;
+    bookAdapterErr("Connection reset by peer");
+    return;
+  }
+
   switch (book.id) {
     case errId:
-      console.log('Oh noo.. User Too Ugly');
+      //console.log('Oh noo.. User Too Ugly');
       bookAdapterErr("User Too Ugly");
       return;
       break;
     case okId:
-      console.log('All ok');
+      //console.log('All ok');
       bookAdapterSuccess(sampleBook);
       break;
+    case notFoundId:
+      bookAdapterSuccess();
+      break;
     default:
-      console.log('Default');
+      //console.log('Default');
       bookAdapterSuccess(book);
       break;
   }
@@ -57,7 +69,8 @@ beforeEach((done) => {
   res = {
     status: sinon.spy(),
     json: sinon.spy(),
-    send: sinon.spy()
+    send: sinon.spy(),
+    end: sinon.spy()
   };
   done();
 });
@@ -68,6 +81,13 @@ describe('book-controller', () => {
       expect(bookAdapterMock.create.args[0][0]).to.be.equal('bodyid');
       done();
     });
+    it('Should throw error on mock Adapter', (done) => {
+      forceError = true;
+      bookController.create(req, res);
+      expect(res.status.args[0][0]).to.be.equal(400);
+      expect(res.send.args[0][0]).to.be.equal('Connection reset by peer');
+      done();
+    });
   });
   describe('ReadAll', () => {
     it('Should query', (done) => {
@@ -75,11 +95,38 @@ describe('book-controller', () => {
       expect(bookAdapterMock.query.args[0][0]).to.be.deep.equal({});
       done();
     });
+    it('Should throw error on mock Adapter', (done) => {
+      forceError = true;
+      bookController.readAll({}, res);
+      expect(res.status.args[0][0]).to.be.equal(400);
+      expect(res.send.args[0][0]).to.be.equal('Connection reset by peer');
+      done();
+    });
   });
   describe('ReadOne', () => {
     it('Should read', (done) => {
       bookController.readOne(req, res);
       expect(bookAdapterMock.read.args[0][0]).to.be.deep.equal({ id: 'paramsid' });
+      done();
+    });
+    it('Should throw error on mock Adapter', (done) => {
+      bookController.readOne({
+        params: {
+          bookId: errId
+        }
+      }, res);
+      expect(res.status.args[0][0]).to.be.equal(400);
+      expect(res.end.args[0][0]).to.be.equal('User Too Ugly');
+      done();
+    });
+    it('Should throw error on empty book', (done) => {
+      bookController.readOne({
+        params: {
+          bookId: notFoundId
+        }
+      }, res);
+      expect(res.status.args[0][0]).to.be.equal(404);
+      expect(res.end.args[0][0]).to.be.equal('Not found');
       done();
     });
     it('Should throw error on empty req.params', (done) => {
@@ -119,7 +166,6 @@ describe('book-controller', () => {
       expect(res.send.args[0][0]).to.be.equal('User Too Ugly');
       done();
     });
-
     it('Should throw error on empty req.params', (done) => {
       req.params = {};
       bookController.updateOne(req, res);
