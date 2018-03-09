@@ -77,15 +77,6 @@ let bookAdapter = (Book) => {
         bookAdapterSuccess(book);
       });
     });
-
-    // Book.remove({ _id: book.id }, (err) => {
-    //   if (err) {
-    //     console.log('we are in error');
-    //     bookAdapterErr('Cannot remove book: ' + err);
-    //     return;
-    //   }
-    //   bookAdapterSuccess(book);
-    // });
   };
   let _query = (query, bookAdapterErr, bookAdapterSuccess) => {
     Book.find(query, (err, books) => {
