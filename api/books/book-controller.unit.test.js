@@ -13,41 +13,39 @@ let res;
 let forceError = false;
 
 let sampleBook = {
-  'title': 'The Best Way to Catch a Snake',
-  'author': 'Karma Yeshe Rabgye',
-  'genre': '',
-  'isbn': '1505725410',
-  'language': 'English',
-  'genre': 'personal development',
-  'read': false,
-  '_id': okId,
-  '_v': okId
+  title: 'The Best Way to Catch a Snake',
+  author: 'Karma Yeshe Rabgye',
+  isbn: '1505725410',
+  language: 'English',
+  genre: 'personal development',
+  read: false,
+  _id: okId,
+  _v: okId
 };
 
 let templateFunction = (book, bookAdapterErr, bookAdapterSuccess) => {
   if(forceError) {
     forceError = false;
-    bookAdapterErr("Connection reset by peer");
+    bookAdapterErr('Connection reset by peer');
     return;
   }
 
   switch (book.id) {
-    case errId:
-      //console.log('Oh noo.. User Too Ugly');
-      bookAdapterErr("User Too Ugly");
-      return;
-      break;
-    case okId:
-      //console.log('All ok');
-      bookAdapterSuccess(sampleBook);
-      break;
-    case notFoundId:
-      bookAdapterSuccess();
-      break;
-    default:
-      //console.log('Default');
-      bookAdapterSuccess(book);
-      break;
+  case errId:
+    //console.log('Oh noo.. User Too Ugly');
+    bookAdapterErr('User Too Ugly');
+    break;
+  case okId:
+    //console.log('All ok');
+    bookAdapterSuccess(sampleBook);
+    break;
+  case notFoundId:
+    bookAdapterSuccess();
+    break;
+  default:
+    //console.log('Default');
+    bookAdapterSuccess(book);
+    break;
   }
 };
 

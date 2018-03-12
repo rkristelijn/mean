@@ -18,12 +18,13 @@ let bookController = (bookAdapter) => {
     });
   };
   let _readAll = (req, res) => {
-    bookAdapter.query({}, (err) => {
-      res.status(400);
-      res.send(err);
-    }, (books) => {
-      res.json(books);
-    });
+    bookAdapter.query({},
+      err => {
+        res.status(400);
+        res.send(err);
+      }, (books) => {
+        res.json(books);
+      });
   };
   let _readOne = (req, res) => {
     if (!_hasBookId(req, res)) {
