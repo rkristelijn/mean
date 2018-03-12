@@ -32,11 +32,9 @@ let templateFunction = (book, bookAdapterErr, bookAdapterSuccess) => {
 
   switch (book.id) {
   case errId:
-    //console.log('Oh noo.. User Too Ugly');
     bookAdapterErr('User Too Ugly');
     break;
   case okId:
-    //console.log('All ok');
     bookAdapterSuccess(sampleBook);
     break;
   case notFoundId:
