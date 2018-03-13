@@ -66,9 +66,8 @@ let bookController = (bookAdapter) => {
     }, err => {
       res.status(400);
       res.send(err);
-    }, book => {
+    }, () => {
       res.status(204);
-      //res.send(`Removed ${book}`);
     });
   };
 

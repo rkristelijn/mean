@@ -1,3 +1,6 @@
+/* eslint-disable max-nested-callbacks */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 const expect = require('chai').expect;
 const app = require('../../app');
 const request = require('supertest')(app);
@@ -19,9 +22,9 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
       .post('/api/books')
       .set('Content-Type', 'application/json')
       .send(book)
-      .end( (req, res) => {
+      .end((req, res) => {
         id = res.body._id;
-      })
+      });
   });
   after(() => {
     server.close();
@@ -217,7 +220,7 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
     });
     it('delete "/api/books/bla" should error out', (done) => {
       request
-        .delete(`/api/books/bla`)
+        .delete('/api/books/bla')
         .set('Content-Type', 'application/json')
         .send({
           genre: 'updatetest genre'
@@ -227,7 +230,7 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
     });
     it('delete "/api/books/" should error out', (done) => {
       request
-        .delete(`/api/books/`)
+        .delete('/api/books/')
         .set('Content-Type', 'application/json')
         .send({
           genre: 'updatetest genre'
