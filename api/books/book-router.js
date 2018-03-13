@@ -4,7 +4,11 @@ let routes = (bookController) => {
   let bookRouter = express.Router();
   bookRouter.route('/')
     .post(bookController.create)
-    .get(bookController.readAll);
+    .get(bookController.readAll)
+    .delete((req, res) => {
+      res.status(404);
+      res.send('Not Found');
+    });
   bookRouter.route('/:bookId')
     .get(bookController.readOne)
     .put(bookController.updateOne)
