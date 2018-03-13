@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
 const Mockgoose = require('mockgoose').Mockgoose;
 //todo: Mockgoose doesn't run on the pi: unsupported architecture,
 // ia32 and x64 are the only valid options
+// @see https://github.com/mccormicka/Mockgoose/issues/231
 const mockgoose = new Mockgoose(mongoose);
 
 let id = '';

@@ -1,4 +1,3 @@
-//todo: know how to use res.send and res.end
 let bookController = (bookAdapter) => {
   let _hasBookId = (req, res) => {
     if (!req.params || !req.params.bookId) {
@@ -34,11 +33,11 @@ let bookController = (bookAdapter) => {
       id: req.params.bookId
     }, err => {
       res.status(400);
-      res.end(err);
+      res.send(err);
     }, book => {
       if (!book) {
         res.status(404);
-        res.end('Not found');
+        res.send('Not found');
       } else {
         res.json(book);
       }

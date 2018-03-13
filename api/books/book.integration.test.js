@@ -48,12 +48,6 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
           expect(res.body._id).to.equal(id);
           done();
         });
-      // .expect(200)
-      // .expect(response => {
-      //   expect(response.body).to.have.property('_id');
-      //   expect(response.body._id).to.equal(id);
-      // })
-      // .end(done);
     });
     it('get "/api/books/:id" should return a 400 on nonObjectId', (done) => {
       request
@@ -100,7 +94,6 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
         .send(book)
         .end((err, res) => {
           expect(res.status).equal(201);
-          //expect(res.text).equal('hooi');
           expect(res.body).to.have.property('_id');
           expect(res.body.title).to.equal(book.title);
           expect(res.body.author).to.equal(book.author);
@@ -111,16 +104,6 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
 
           done();
         });
-      // .expect(response => {
-      //   expect(response.body).to.have.property('_id');
-      //   expect(response.body.title).to.equal(book.title);
-      //   expect(response.body.author).to.equal(book.author);
-      //   expect(response.body.genre).to.equal(book.genre);
-      //   expect(response.body.read).to.equal(false);
-
-      //   id = response.body._id;
-      // })
-      // .end(done);
     });
   });
   describe('put', () => {
@@ -197,26 +180,9 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
   });
   describe('delete', () => {
     it('delete "/api/books/:id" should delete a book', (done) => {
-      //console.log(`deleting ${id}`);
-      done();
-
       request
         .delete(`/api/books/${id}`)
         .expect(204, done);
-      // .set('Content-Type', 'application/json')
-      // .send({})
-      // //   genre: 'updatetest genre'
-      // // })
-      // // .end( (err, res) => {
-      // //   expect(res.status).equal(204);
-      // //   expect(res.text).equal('hooi');
-      // //   done();
-      // // });
-      // .end((req, res) => {
-      //   console.log('in end');
-      //   expect(res.status).equal(204);
-      //   done();
-      // });
     });
     it('delete "/api/books/bla" should error out', (done) => {
       request

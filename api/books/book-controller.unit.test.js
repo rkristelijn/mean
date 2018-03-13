@@ -24,7 +24,7 @@ let sampleBook = {
 };
 
 let templateFunction = (book, bookAdapterErr, bookAdapterSuccess) => {
-  if(forceError) {
+  if (forceError) {
     forceError = false;
     bookAdapterErr('Connection reset by peer');
     return;
@@ -41,7 +41,6 @@ let templateFunction = (book, bookAdapterErr, bookAdapterSuccess) => {
     bookAdapterSuccess();
     break;
   default:
-    //console.log('Default');
     bookAdapterSuccess(book);
     break;
   }
@@ -112,7 +111,7 @@ describe('book-controller', () => {
         }
       }, res);
       expect(res.status.args[0][0]).to.be.equal(400);
-      expect(res.end.args[0][0]).to.be.equal('User Too Ugly');
+      expect(res.send.args[0][0]).to.be.equal('User Too Ugly');
       done();
     });
     it('Should throw error on empty book', (done) => {
@@ -122,7 +121,7 @@ describe('book-controller', () => {
         }
       }, res);
       expect(res.status.args[0][0]).to.be.equal(404);
-      expect(res.end.args[0][0]).to.be.equal('Not found');
+      expect(res.send.args[0][0]).to.be.equal('Not found');
       done();
     });
     it('Should throw error on empty req.params', (done) => {
