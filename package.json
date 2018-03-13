@@ -19,7 +19,7 @@
     "serve:nodemon": "nodemon index.js",
     "serve": "node index.js --color",
     "test:unit": "mocha '**/*.unit.test.js' -R progress --color --exit",
-    "test:integration": "mocha '**/*.integration.test.js' -R progress --color --exit",
+    "test:integration": "mocha '**/*.integration.test.js' -R progress --color --timeout 40000 --exit",
     "test:security": "nsp check --reporter checkstyle --color",
     "lint": "eslint . --color",
     "lint:fix": "eslint . --color --fix; exit 0",
