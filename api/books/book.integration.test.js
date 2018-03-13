@@ -156,6 +156,42 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
         .end(done);
     });
   });
+  describe('patch', () => {
+    it('patch "/api/books/:id" should return an updated book.author', (done) => {
+      request
+        .patch(`/api/books/${id}`)
+        .set('Content-Type', 'application/json')
+        .send({
+          author: 'updatetest'
+        })
+        .expect(200)
+        .expect(response => {
+          expect(response.body).to.have.property('_id');
+          expect(response.body._id).to.equal(id);
+          expect(response.body.title).to.equal(book.title);
+          expect(response.body.author).to.equal('updatetest');
+          expect(response.body.read).to.equal(false);
+        })
+        .end(done);
+    });
+    it('patch "/api/books/:id" should return an updated book.genre', (done) => {
+      request
+        .patch(`/api/books/${id}`)
+        .set('Content-Type', 'application/json')
+        .send({
+          genre: 'updatetest genre'
+        })
+        .expect(200)
+        .expect(response => {
+          expect(response.body).to.have.property('_id');
+          expect(response.body._id).to.equal(id);
+          expect(response.body.title).to.equal(book.title);
+          expect(response.body.genre).to.equal('updatetest genre');
+          expect(response.body.read).to.equal(false);
+        })
+        .end(done);
+    });
+  });
   describe('delete', () => {
     it('delete "/api/books/:id" should delete a book', (done) => {
       //console.log(`deleting ${id}`);
