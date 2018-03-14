@@ -41,7 +41,7 @@ userModel.pre('find', function (next) {
 });
 userModel.pre('findOne', function (next) {
   if (this._conditions._id.equals(idErr)) {
-    if(!skipOnce) {
+    if (!skipOnce) {
       let err = new Error('Need to get a Turbo Man for Christmas');
       idErr = '';
       next(err);
@@ -74,7 +74,7 @@ describe('user-adapter', () => {
   describe('Create', () => {
     it('Create with no data should throw error', (done) => {
       userAdapter.create({}, (err) => {
-        expect(err.message.substr(0,26)).to.be.equal('TestUser validation failed');
+        expect(err.message.substr(0, 26)).to.be.equal('TestUser validation failed');
         done();
       }, user => {
         expect(user).to.be.equal('undefined');
@@ -84,7 +84,7 @@ describe('user-adapter', () => {
       userAdapter.create({
         username: 'hooi'
       }, (err) => {
-        expect(err.message.substr(0,26)).to.be.equal('TestUser validation failed');
+        expect(err.message.substr(0, 26)).to.be.equal('TestUser validation failed');
         done();
       }, user => {
         expect(user.title).to.equal('hooi');
@@ -235,7 +235,7 @@ describe('user-adapter', () => {
       });
     });
     xit('Should raise Turbo Man error on query', (done) => {
-      userAdapter.query({title: 'Turbo Man'}, err => {
+      userAdapter.query({ title: 'Turbo Man' }, err => {
         expect(err).to.equal('Cannot find user: Error: Need to get a Turbo Man for Christmas');
         done();
       }, users => {
