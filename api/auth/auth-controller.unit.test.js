@@ -1,3 +1,6 @@
+/* eslint-disable max-nested-callbacks */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
