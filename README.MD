@@ -29,7 +29,12 @@ Steps done:
 - added supertest for intergration tests
 - testing routes
 
+working on:
+- passport local strategy
+
 todo:
+- Mockgoose doesn't run on the pi: unsupported architecture, ia32 and x64 are the only valid options
+@see [github.com/mccormicka/Mockgoose/issues/231](https://github.com/mccormicka/Mockgoose/issues/231)
 - add sinon test for [chained function calls](https://stackoverflow.com/questions/37948135/how-do-i-stub-a-chain-of-methods-in-sinon)
 - fix tightly coupled http and controller
 - optimize HATEOS

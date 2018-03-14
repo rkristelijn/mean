@@ -29,7 +29,7 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
   after(() => {
     server.close();
   });
-  describe('get', () => {
+  describe('Get', () => {
     it('get "/api/books" Should return an array', (done) => {
       request
         .get('/api/books')
@@ -62,7 +62,7 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
         .end(done);
     });
   });
-  describe('post', () => {
+  describe('Post', () => {
     it('post "/api/books" Should return a Book', (done) => {
       request
         .post('/api/books')
@@ -106,7 +106,7 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
         });
     });
   });
-  describe('put', () => {
+  describe('Put', () => {
     it('put "/api/books/:id" should return an updated book.author', (done) => {
       request
         .put(`/api/books/${id}`)
@@ -142,7 +142,7 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
         .end(done);
     });
   });
-  describe('patch', () => {
+  describe('Patch', () => {
     it('patch "/api/books/:id" should return an updated book.author', (done) => {
       request
         .patch(`/api/books/${id}`)
@@ -178,11 +178,13 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
         .end(done);
     });
   });
-  describe('delete', () => {
+  describe('Delete', () => {
     it('delete "/api/books/:id" should delete a book', (done) => {
       request
         .delete(`/api/books/${id}`)
         .expect(204, done);
+
+      done();
     });
     it('delete "/api/books/bla" should error out', (done) => {
       request

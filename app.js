@@ -2,6 +2,8 @@ const express = require('express');
 const chalk = require('chalk');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+let logger = require('morgan');
+let cookieParser = require('cookie-parser');
 
 let env = {
   prod: 'mongodb://localhost/bookAPI',
@@ -30,8 +32,10 @@ let db = mongoose.connect(dblink, (connectionErr, con) => {
 });
 
 const app = express();
+app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 let apiRouter = require('./api/api-router')();
 app.use('/api', apiRouter);

@@ -18,8 +18,8 @@
     "parellel": "npm-run-all --parallel test:security test:unit lint",
     "serve:nodemon": "nodemon index.js",
     "serve": "node index.js --color",
-    "test:unit": "mocha '**/*.unit.test.js' -R progress --color --exit",
-    "test:integration": "mocha '**/*.integration.test.js' -R progress --color --timeout 40000 --exit",
+    "test:unit": "mocha '**/*.unit.test.js' --color --exit",
+    "test:integration": "mocha '**/*.integration.test.js' --color --timeout 40000 --exit",
     "test:security": "nsp check --reporter checkstyle --color",
     "lint": "eslint . --color",
     "lint:fix": "eslint . --color --fix; exit 0",
@@ -43,8 +43,12 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "chalk": "^2.3.0",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
-    "mongoose": "^5.0.7"
+    "mongoose": "^5.0.7",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
