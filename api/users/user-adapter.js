@@ -2,6 +2,9 @@ let userAdapter = (User) => {
   let _create = (user, userAdapterErr, userAdapterSuccess) => {
     let _user = new User(user);
     _user.save((err, userResult) => {
+      if(err) {
+        userAdapterErr(err);
+      }
       userAdapterSuccess(userResult);
     });
   };

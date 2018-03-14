@@ -3,13 +3,18 @@ const Schema = mongoose.Schema;
 
 const userModel = new Schema({
   username: {
-    type: String
+    type: String,
+    required: true,
+    index: {
+      unique: true
+    }
   },
   password: {
     type: String
   },
   displayName: {
-    type: String
+    type: String,
+    required: true
   },
   image: {
     type: String
