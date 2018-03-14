@@ -50,4 +50,10 @@ describe('book-model', () => {
       done();
     });
   });
+  describe('Validations', () => {
+    it('Should default read to false', done => {
+      expect(book.get('read')).to.equal(false);
+      done();
+    });
+  });
 });
