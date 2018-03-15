@@ -8,49 +8,84 @@ const Schema = mongoose.Schema;
 const Mockgoose = require('mockgoose').Mockgoose;
 const mockgoose = new Mockgoose(mongoose);
 
+const okId = '000000000000000000000001';
+const errId = 'FFFFFFFFFFFFFFFFFFFFFFFF';
+const notFoundId = '535cf8e3df3aaa723fc9cad1';
+
 let id = '';
 let id2 = '';
 let idErr = '';
 let skipOnce = false;
 
-userModel.pre('remove', function (next) {
-  if (this._id.equals(idErr)) {
-    let err = new Error('Need to get a Turbo Man for Christmas');
-    idErr = '';
-    next(err);
+let controlledErrorHook = (id ,next) => {
+  //console.log('controlledErrorHook', id, idErr, typeof id);
+  if (typeof id !== 'object') {
+    //console.log('hook cannot work on id of type string');
+    next();
+    return;
   }
-  if (this.title === 'Turbo Man') {
-    let err = new Error('Need to get a Turbo Man for Christmas');
-    next(err);
-  }
-  next();
-});
-userModel.pre('save', function (next) {
-  if (this.title === 'Turbo Man') {
-    let err = new Error('Need to get a Turbo Man for Christmas');
-    next(err);
-  }
-  next();
-});
-userModel.pre('find', function (next) {
-  if (this._conditions.title === 'Turbo Man') {
-    let err = new Error('Need to get a Turbo Man for Christmas');
-    next(err);
-  }
-  next();
-});
-userModel.pre('findOne', function (next) {
-  if (this._conditions._id.equals(idErr)) {
+
+  if (id.equals(idErr)) {
+    //console.log('equals');
     if (!skipOnce) {
+      //console.log('returning error');
       let err = new Error('Need to get a Turbo Man for Christmas');
       idErr = '';
       next(err);
+      return;
     } else {
+      //onsole.log('skippingonce');
       skipOnce = false;
       next();
+      return;
     }
   }
+
+  //onsole.log('not equals');
   next();
+};
+
+userModel.pre('remove', function (next) {
+  console.log('preRemoveHook');
+  controlledErrorHook(this._id, next);
+  // if (this._id.equals(idErr)) {
+  //   let err = new Error('Need to get a Turbo Man for Christmas');
+  //   idErr = '';
+  //   next(err);
+  // }
+  // if (this.title === 'Turbo Man') {
+  //   let err = new Error('Need to get a Turbo Man for Christmas');
+  //   next(err);
+  // }
+  // next();
+});
+userModel.pre('save', function (next) {
+  console.log('preSaveHook');
+  controlledErrorHook(this._id, next);
+});
+userModel.pre('find', function (next) {
+  console.log('preFindHook');
+  controlledErrorHook(this._conditions._id, next);
+  // if (this._conditions.title === 'Turbo Man') {
+  //   let err = new Error('Need to get a Turbo Man for Christmas');
+  //   next(err);
+  // }
+  // next();
+});
+userModel.pre('findOne', function (next) {
+  console.log('prefindOneHook');
+  controlledErrorHook(this._conditions._id, next);
+  // if (this._conditions._id.equals(idErr)) {
+  //   if (!skipOnce) {
+  //     let err = new Error('Need to get a Turbo Man for Christmas');
+  //     idErr = '';
+  //     next(err);
+  //   } else {
+  //     skipOnce = false;
+  //     next();
+  //   }
+  // }
+  // next();
 });
 
 const userAdapter = require('./user-adapter')(mongoose.model('TestUser', userModel));
@@ -74,7 +109,7 @@ describe('user-adapter', () => {
   describe('Create', () => {
     it('Create with no data should throw error', (done) => {
       userAdapter.create({}, (err) => {
-        expect(err.message.substr(0, 26)).to.be.equal('TestUser validation failed');
+        expect(err.substr(0, 26)).to.be.equal('TestUser validation failed');
         done();
       }, user => {
         expect(user).to.be.equal('undefined');
@@ -84,12 +119,10 @@ describe('user-adapter', () => {
       userAdapter.create({
         username: 'hooi'
       }, (err) => {
-        expect(err.message.substr(0, 26)).to.be.equal('TestUser validation failed');
+        expect(err.substr(0, 26)).to.be.equal('TestUser validation failed');
         done();
       }, user => {
-        expect(user.title).to.equal('hooi');
-        expect(user.read).to.equal(false);
-        id = user._id.toString();
+        expect(user.username).to.equal('should not succeed');
         done();
       });
     });
@@ -98,7 +131,7 @@ describe('user-adapter', () => {
         username: 'henk',
         displayName: 'Henk Stubbe'
       }, (err) => {
-        expect(err.message).to.be.equal('undefined');
+        expect(err).to.be.equal('undefined');
         done();
       }, user => {
         expect(user.username).to.equal('henk');
@@ -109,101 +142,98 @@ describe('user-adapter', () => {
     });
   });
   describe('Read', () => {
-    xit('Read without userId should throw error', done => {
+    it('Read without user.id should throw error', done => {
       userAdapter.read(id, (err) => {
-        expect(err).to.be.equal('userId is required');
+        expect(err).to.be.equal('user.id is required');
         done();
       }, user => {
-        expect(user).to.be('undefined');
+        expect(user).to.be('should not succeed');
         done();
       });
     });
-    xit('Read should return a user that was just created', done => {
+    it('Read should return a user that was just created', done => {
       userAdapter.read({ id: id }, (err) => {
-        expect(err).to.be('undefined');
+        expect(err).to.be('should not throw error');
         done();
       }, user => {
-        expect(user.title).to.equal('hooi');
-        expect(user.read).to.equal(false);
+        expect(user.username).to.equal('henk');
+        expect(user.displayName).to.equal('Henk Stubbe');
         done();
       });
     });
-    xit('Should raise non-Id on delete when Id is \'For great justice.\'', (done) => {
+    it('Should raise non-Id on read when Id is \'For great justice.\'', (done) => {
       userAdapter.read({ id: 'For great justice.' }, err => {
-        expect(err).to.equal('Cast to ObjectId failed for value: For great justice.');
+        expect(err).to.equal('Cast to ObjectId failed for value "For great justice." at path "_id" for model "TestUser"');
         done();
       }, (user) => {
-        expect(user).to.be('undefined');
+        expect(user).to.be('should not succeed');
         done();
       });
     });
   });
   describe('Update', () => {
-    xit('Update should add a genre', done => {
+    it('Update should add an image', done => {
       userAdapter.update({
         id: id,
-        genre: 'Some genre'
+        image: 'https://i.warosu.org/data/tg/img/0291/88/1388516488408.png'
       }, (err) => {
-        expect(err).to.be('undefined');
+        expect(err).to.be('should not throw error');
         done();
       }, user => {
-        expect(user.title).to.equal('hooi');
-        expect(user.genre).to.equal('Some genre');
-        expect(user.read).to.equal(false);
+        expect(user.username).to.equal('henk');
+        expect(user.displayName).to.equal('Henk Stubbe');
+        expect(user.image).to.equal('https://i.warosu.org/data/tg/img/0291/88/1388516488408.png');
         done();
       });
     });
-    xit('Update should add a author', done => {
+    it('Update should add a password', done => {
       userAdapter.update({
         id: id,
-        author: 'Some author'
+        password: 'BZ@KzlbWInit5QW'
       }, (err) => {
-        expect(err).to.be('undefined');
+        expect(err).to.be('should not throw error');
         done();
       }, user => {
-        expect(user.title).to.equal('hooi');
-        expect(user.genre).to.equal('Some genre');
-        expect(user.author).to.equal('Some author');
-        expect(user.read).to.equal(false);
+        expect(user.username).to.equal('henk');
+        expect(user.displayName).to.equal('Henk Stubbe');
+        expect(user.image).to.equal('https://i.warosu.org/data/tg/img/0291/88/1388516488408.png');
+        expect(user.password).to.equal('BZ@KzlbWInit5QW');
         done();
       });
     });
-    xit('Should raise Turbo Man error on update', (done) => {
-      userAdapter.update({
-        id: id,
-        title: 'Turbo Man',
-        author: 'Some other author'
-      }, (err) => {
-        expect(err).to.equal('Cannot save user: Error: Need to get a Turbo Man for Christmas');
-        done();
-      }, user => {
-        expect(user.title).to.equal('this is not right');
-        done();
-      });
-    });
-    xit('Should raise not-found-error on update', (done) => {
+    it('Should raise Turbo Man error on update', (done) => {
       idErr = mongoose.Types.ObjectId(id);
+      skipOnce = true;
       userAdapter.update({
         id: id,
-        title: 'What\'s a body gotta do, to get a drink of soda pop around here?',
-        author: 'Some other author'
+        displayName: 'Turbo Man'
       }, (err) => {
-        expect(err).to.equal('Cannot find user: Error: Need to get a Turbo Man for Christmas');
-        idErr = '';
+        expect(err).to.equal('Need to get a Turbo Man for Christmas');
         done();
       }, user => {
-        expect(user.title).to.equal('this is not right');
-        idErr = '';
+        expect(user.displayName).not.to.equal('Turbo Man');
         done();
       });
     });
-    xit('Should raise non-Id error on update when Id is \'Take off every ZIG!\'', (done) => {
+    it('Should raise not-found-error on update', (done) => {
+      userAdapter.update({
+        id: notFoundId,
+        displayName: 'What\'s a body gotta do, to get a drink of soda pop around here?'
+      }, (err) => {
+        expect(err).to.equal('Not found');
+        done();
+      }, user => {
+        expect(user.displayName).to.equal('this is not right');
+        done();
+      });
+    });
+    it('Should raise non-Id error on update when Id is \'Take off every ZIG!\'', (done) => {
       userAdapter.update({
         id: 'Take off every ZIG!',
-        title: 'Zero Wing',
+        displayName: 'Zero Wing',
         author: 'Cats'
       }, (err) => {
-        expect(err).to.equal('Cast to ObjectId failed for value: Take off every ZIG!');
+        expect(err.substr(0, 33)).to.be.equal('Cast to ObjectId failed for value');
         done();
       }, user => {
         expect(user.title).to.equal('this is not right');

@@ -3,13 +3,22 @@ let userAdapter = (User) => {
     let _user = new User(user);
     _user.save((err, userResult) => {
       if(err) {
-        userAdapterErr(err);
+        userAdapterErr(err.message);
+        return;
       }
       userAdapterSuccess(userResult);
     });
   };
   let _read = (user, userAdapterErr, userAdapterSuccess) => {
-    user.findById(user.id, (err, userResult) => {
+    if(!user || !user.id) {
+      userAdapterErr('user.id is required');
+      return;
+    }
+    User.findById(user.id, (err, userResult) => {
+      if(err) {
+        userAdapterErr(err.message);
+        return;
+      }
       userAdapterSuccess(userResult);
     });
   };
@@ -18,12 +27,19 @@ let userAdapter = (User) => {
       userAdapterErr(err);
       return;
     }, (_user) => {
+      if(!_user) {
+        userAdapterErr('Not found');
+        return;
+      }
       for (let member in user) {
         if (member !== 'id') {
           _user[member] = user[member];
         }
       }
       _user.save((err, userResult) => {
+        if(err) {
+          userAdapterErr(err.message);
+        }
         userAdapterSuccess(userResult);
       });
     });
