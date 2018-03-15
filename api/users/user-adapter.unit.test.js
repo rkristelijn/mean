@@ -17,7 +17,7 @@ let id2 = '';
 let idErr = '';
 let skipOnce = false;
 
-let controlledErrorHook = (id ,next) => {
+let controlledErrorHook = (id, next) => {
   //console.log('controlledErrorHook', id, idErr, typeof id);
   if (typeof id !== 'object') {
     //console.log('hook cannot work on id of type string');
@@ -33,12 +33,11 @@ let controlledErrorHook = (id ,next) => {
       idErr = '';
       next(err);
       return;
-    } else {
-      //onsole.log('skippingonce');
-      skipOnce = false;
-      next();
-      return;
     }
+    //onsole.log('skippingonce');
+    skipOnce = false;
+    next();
+    return;
   }
 
   //onsole.log('not equals');
@@ -163,7 +162,7 @@ describe('user-adapter', () => {
     });
     it('Should raise non-Id on read when Id is \'For great justice.\'', (done) => {
       userAdapter.read({ id: 'For great justice.' }, err => {
-        expect(err).to.equal('Cast to ObjectId failed for value "For great justice." at path "_id" for model "TestUser"');
+        expect(err.substr(0, 33)).to.be.equal('Cast to ObjectId failed for value');
         done();
       }, (user) => {
         expect(user).to.be('should not succeed');
