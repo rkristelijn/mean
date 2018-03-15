@@ -2,7 +2,7 @@ let userAdapter = (User) => {
   let _create = (user, userAdapterErr, userAdapterSuccess) => {
     let _user = new User(user);
     _user.save((err, userResult) => {
-      if(err) {
+      if (err) {
         userAdapterErr(err.message);
         return;
       }
@@ -10,12 +10,12 @@ let userAdapter = (User) => {
     });
   };
   let _read = (user, userAdapterErr, userAdapterSuccess) => {
-    if(!user || !user.id) {
+    if (!user || !user.id) {
       userAdapterErr('user.id is required');
       return;
     }
     User.findById(user.id, (err, userResult) => {
-      if(err) {
+      if (err) {
         userAdapterErr(err.message);
         return;
       }
@@ -27,7 +27,7 @@ let userAdapter = (User) => {
       userAdapterErr(err);
       return;
     }, (_user) => {
-      if(!_user) {
+      if (!_user) {
         userAdapterErr('Not found');
         return;
       }
@@ -37,7 +37,7 @@ let userAdapter = (User) => {
         }
       }
       _user.save((err, userResult) => {
-        if(err) {
+        if (err) {
           userAdapterErr(err.message);
         }
         userAdapterSuccess(userResult);
@@ -46,9 +46,18 @@ let userAdapter = (User) => {
   };
   let _delete = (user, userAdapterErr, userAdapterSuccess) => {
     /* eslint-disable no-unused-vars */
-    user.findById(user.id, (findErr, userResult) => {
-    /* eslint-disable no-unused-vars */
+    User.findById(user.id, (findErr, userResult) => {
+      if (findErr) {
+        userAdapterErr(findErr.message);
+      }
+      if (!userResult) {
+        userAdapterErr('Not Found');
+      }
+      /* eslint-disable no-unused-vars */
       userResult.remove((err) => {
+        if (err) {
+          userAdapterErr(err.message);
+        }
         userAdapterSuccess(user);
       });
     });
@@ -56,6 +65,9 @@ let userAdapter = (User) => {
   let _query = (query, userAdapterErr, userAdapterSuccess) => {
     /* eslint-disable no-unused-vars */
     User.find(query, (err, users) => {
+      if (err) {
+        userAdapterErr(err.message);
+      }
       userAdapterSuccess(users);
     });
   };

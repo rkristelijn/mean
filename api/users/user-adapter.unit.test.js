@@ -18,7 +18,7 @@ let idErr = '';
 let skipOnce = false;
 
 let controlledErrorHook = (id, next) => {
-  //console.log('controlledErrorHook', id, idErr, typeof id);
+  console.log('controlledErrorHook', id, idErr, typeof id);
   if (typeof id !== 'object') {
     //console.log('hook cannot work on id of type string');
     next();
@@ -63,7 +63,7 @@ userModel.pre('save', function (next) {
   controlledErrorHook(this._id, next);
 });
 userModel.pre('find', function (next) {
-  console.log('preFindHook');
+  //console.log('preFindHook', this._conditions);
   controlledErrorHook(this._conditions._id, next);
   // if (this._conditions.title === 'Turbo Man') {
   //   let err = new Error('Need to get a Turbo Man for Christmas');
@@ -241,20 +241,21 @@ describe('user-adapter', () => {
     });
   });
   describe('Query', () => {
-    xit('Should create another one', (done) => {
+    it('Should create another one', (done) => {
       userAdapter.create({
-        title: 'haai'
+        username: 'jantje',
+        displayName: 'Jantje'
       }, (err) => {
         expect(err).to.be('undefined');
         done();
       }, user => {
-        expect(user.title).to.equal('haai');
-        expect(user.read).to.equal(false);
+        expect(user.username).to.equal('jantje');
+        expect(user.displayName).to.equal('Jantje');
         id2 = user._id.toString();
         done();
       });
     });
-    xit('Should return two items', (done) => {
+    it('Should return two items', (done) => {
       userAdapter.query({}, err => {
         expect(err).to.be('undefined');
         done();
@@ -263,9 +264,10 @@ describe('user-adapter', () => {
         done();
       });
     });
-    xit('Should raise Turbo Man error on query', (done) => {
-      userAdapter.query({ title: 'Turbo Man' }, err => {
-        expect(err).to.equal('Cannot find user: Error: Need to get a Turbo Man for Christmas');
+    it('Should raise Turbo Man error on query', (done) => {
+      idErr = mongoose.Types.ObjectId(id2);
+      userAdapter.query({ _id: mongoose.Types.ObjectId(id2) }, err => {
+        expect(err).to.equal('Need to get a Turbo Man for Christmas');
         done();
       }, users => {
         expect(users).to.equal('Should throw error');
@@ -274,18 +276,18 @@ describe('user-adapter', () => {
     });
   });
   describe('Delete', () => {
-    xit('Should raise cannot remove on delete', (done) => {
-      idErr = id;
+    it('Should raise cannot remove on delete', (done) => {
+      idErr = mongoose.Types.ObjectId(id);
       skipOnce = true;
-      userAdapter.delete({ id: id }, err => {
-        expect(err).to.equal('Cannot remove user: Error: Need to get a Turbo Man for Christmas');
+      userAdapter.delete({ id: idErr }, err => {
+        expect(err).to.equal('Need to get a Turbo Man for Christmas');
         done();
       }, (user) => {
         expect(user).to.be('undefined');
         done();
       });
     });
-    xit('Should delete one item', (done) => {
+    it('Should delete one item', (done) => {
       userAdapter.delete({ id: id }, err => {
         expect(err).to.be('undefined');
         done();
@@ -304,7 +306,7 @@ describe('user-adapter', () => {
         });
       });
     });
-    xit('Should delete all items', (done) => {
+    it('Should delete all items', (done) => {
       userAdapter.delete({ id: id2 }, err => {
         expect(err).to.be('undefined');
         done();
@@ -323,33 +325,37 @@ describe('user-adapter', () => {
         });
       });
     });
-    xit('Should raise Turbo Man error on delete', (done) => {
+    it('Should raise Turbo Man error on delete', (done) => {
       userAdapter.create({
-        title: 'Turbo Man'
+        displayName: 'Turbo Man',
+        username: 'turboman'
       }, (err) => {
+        expect(err).to.equal('Should not throw error');
         done();
       }, user => {
+        idErr = user._id;
+        skipOnce = true;
         userAdapter.delete({ id: user.id }, err => {
-          expect(err).to.equal('Cannot remove user: Error: Need to get a Turbo Man for Christmas');
+          expect(err).to.equal('Need to get a Turbo Man for Christmas');
           done();
         }, (user) => {
-          expect(user).to.be('undefined');
+          expect(user).to.be('Should not succeed');
           done();
         });
       });
     });
-    xit('Should raise not-found-error on delete', (done) => {
+    it('Should raise not-found-error on delete', (done) => {
       userAdapter.delete({ id: '000000000000000000000001' }, err => {
-        expect(err).to.equal('Cannot find user: 000000000000000000000001');
+        expect(err).to.equal('Not Found');
         done();
       }, (user) => {
-        expect(user).to.be('undefined');
+        expect(user).to.be('Should not succeed');
         done();
       });
     });
-    xit('Should raise non-Id on delete when Id is \'All your base are belong to us!\'', (done) => {
+    it('Should raise non-Id on delete when Id is \'All your base are belong to us!\'', (done) => {
       userAdapter.delete({ id: 'All your base are belong to us!' }, err => {
-        expect(err).to.equal('Cast to ObjectId failed for value: All your base are belong to us!');
+        expect(err.substr(0, 33)).to.be.equal('Cast to ObjectId failed for value');
         done();
       }, (user) => {
         expect(user).to.be('undefined');
