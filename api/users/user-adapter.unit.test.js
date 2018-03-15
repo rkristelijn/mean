@@ -18,73 +18,37 @@ let idErr = '';
 let skipOnce = false;
 
 let controlledErrorHook = (id, next) => {
-  console.log('controlledErrorHook', id, idErr, typeof id);
   if (typeof id !== 'object') {
-    //console.log('hook cannot work on id of type string');
     next();
     return;
   }
 
   if (id.equals(idErr)) {
-    //console.log('equals');
     if (!skipOnce) {
-      //console.log('returning error');
       let err = new Error('Need to get a Turbo Man for Christmas');
       idErr = '';
       next(err);
       return;
     }
-    //onsole.log('skippingonce');
     skipOnce = false;
     next();
     return;
   }
 
-  //onsole.log('not equals');
   next();
 };
 
 userModel.pre('remove', function (next) {
-  console.log('preRemoveHook');
   controlledErrorHook(this._id, next);
-  // if (this._id.equals(idErr)) {
-  //   let err = new Error('Need to get a Turbo Man for Christmas');
-  //   idErr = '';
-  //   next(err);
-  // }
-  // if (this.title === 'Turbo Man') {
-  //   let err = new Error('Need to get a Turbo Man for Christmas');
-  //   next(err);
-  // }
-  // next();
 });
 userModel.pre('save', function (next) {
-  console.log('preSaveHook');
   controlledErrorHook(this._id, next);
 });
 userModel.pre('find', function (next) {
-  //console.log('preFindHook', this._conditions);
   controlledErrorHook(this._conditions._id, next);
-  // if (this._conditions.title === 'Turbo Man') {
-  //   let err = new Error('Need to get a Turbo Man for Christmas');
-  //   next(err);
-  // }
-  // next();
 });
 userModel.pre('findOne', function (next) {
-  console.log('prefindOneHook');
   controlledErrorHook(this._conditions._id, next);
-  // if (this._conditions._id.equals(idErr)) {
-  //   if (!skipOnce) {
-  //     let err = new Error('Need to get a Turbo Man for Christmas');
-  //     idErr = '';
-  //     next(err);
-  //   } else {
-  //     skipOnce = false;
-  //     next();
-  //   }
-  // }
-  // next();
 });
 
 const userAdapter = require('./user-adapter')(mongoose.model('TestUser', userModel));
