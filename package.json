@@ -9,7 +9,7 @@
       "extensions": "js,json,html,css",
       "quiet": true
     },
-    "test:user-unit:coverage": {
+    "test:watch:coverage": {
       "patterns": ".",
       "extensions": "js,json,html,css",
       "quiet": true
@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "npm run watch start:parallel:refresh",
-    "start:watch:unit": "npm run watch test:user-unit:coverage",
+    "start:watch:test": "npm run watch test:watch:coverage",
     "start:parallel:norefresh": "npm-run-all --parallel test:security test:unit lint serve:nodemon | gnomon --type=elapsed-total",
     "start:parallel:refresh": "npm-run-all --parallel test:security test:unit test:integration lint serve | gnomon --type=elapsed-total",
     "nodemon": "nodemon index.js --exec 'npm run parellel' | gnomon --type=elapsed-total",
@@ -33,7 +33,7 @@
     "watch": "npm-watch",
     "test:integration:coverage": "nyc mocha '**/*integration.test.js' --color --exit",
     "test:unit:coverage": "nyc mocha '**/*unit.test.js' --color --exit",
-    "test:user-unit:coverage": "nyc mocha '**/user-adapter.unit.test.js' --color --exit",
+    "test:watch:coverage": "nyc mocha '**/user.integration.test.js' --color --exit",
     "prestart": "echo 'Starting...'",
     "prestop": "echo 'Stopping...'"
   },

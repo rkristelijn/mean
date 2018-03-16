@@ -49,14 +49,17 @@ let userAdapter = (User) => {
     User.findById(user.id, (findErr, userResult) => {
       if (findErr) {
         userAdapterErr(findErr.message);
+        return;
       }
       if (!userResult) {
         userAdapterErr('Not Found');
+        return;
       }
       /* eslint-disable no-unused-vars */
       userResult.remove((err) => {
         if (err) {
           userAdapterErr(err.message);
+          return;
         }
         userAdapterSuccess(user);
       });

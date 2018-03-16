@@ -12,6 +12,9 @@ const userModel = new Schema({
   password: {
     type: String
   },
+  salt: {
+    type: String
+  },
   displayName: {
     type: String,
     required: true
