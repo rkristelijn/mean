@@ -7,7 +7,8 @@ let sampleuser = {
   password: 'tiger',
   displayName: 'Bruce Scott',
   image: 'http://www.orafaq.com/wiki/images/c/c1/Bruce_Scott.jpg',
-  email: 'b.scott@oracle.com'
+  email: 'b.scott@oracle.com',
+  salt: 'test'
 };
 
 describe('user-model', () => {
@@ -22,7 +23,7 @@ describe('user-model', () => {
     });
   });
   describe('Fields', () => {
-    let fields = ['username', 'password', 'displayName', 'image', 'email', '_id'];
+    let fields = ['salt', 'username', 'password', 'displayName', 'image', 'email', '_id'];
     it(`Should have proper fields: ${fields}`, (done) => {
       /* eslint-disable no-unused-expressions */
       for (let field of fields) {

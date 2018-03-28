@@ -6,7 +6,7 @@ const passport = require('./passport');
 
 describe('passport', () => {
   describe('serializeUser', () => {
-    it('Should test nothing', (done) => {
+    xit('Should test nothing', (done) => {
       let sampleUser = {
         username: 'hello',
         password: 'hello'

@@ -12,10 +12,12 @@ let userRouter = require('./users/user-router')(userController);
 
 let authController = require('./auth/auth-controller')();
 let authRouter = require('./auth/auth-router')(authController);
+//let authRouter = require('./auth/auth-router')(req, res);
 
 let routes = () => {
   let apiRouter = express.Router();
   apiRouter.use('/', (req, res, next) => {
+    console.log('in apiRouter');
     next();
   });
 

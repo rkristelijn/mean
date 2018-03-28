@@ -20,4 +20,5 @@ module.exports = (app) => {
   // require('./strategies/facebook-strategy')()
   // require('./strategies/github-strategy')()
   // require('./strategies/linkedin-strategy')()
+  require('./strategies/local-strategy')();
 };
