@@ -33,9 +33,9 @@ Steps done:
 done:
 - simple login form on url http://localhost:3100/api/auth/local/login
 
-next:
+doing:
 - remove console output
-- chase linting errors
+[x] chase linting errors
 - merge code
 - protected routes
 - add tests
