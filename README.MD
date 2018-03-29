@@ -28,11 +28,18 @@ Steps done:
 - added testing adapter and controller
 - added supertest for intergration tests
 - testing routes
-
-working on:
 - passport local strategy
 
-todo:
+done:
+- simple login form on url http://localhost:3100/api/auth/local/login
+
+next:
+- remove console output
+- chase linting errors
+- merge code
+- protected routes
+
+todo (low prio):
 - Mockgoose doesn't run on the pi: unsupported architecture, ia32 and x64 are the only valid options
 @see [github.com/mccormicka/Mockgoose/issues/231](https://github.com/mccormicka/Mockgoose/issues/231)
 - add sinon test for [chained function calls](https://stackoverflow.com/questions/37948135/how-do-i-stub-a-chain-of-methods-in-sinon)
