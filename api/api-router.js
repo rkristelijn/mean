@@ -10,16 +10,14 @@ let useAdapter = require('./users/user-adapter')(User);
 let userController = require('./users/user-controller')(useAdapter);
 let userRouter = require('./users/user-router')(userController);
 
-//let authController = require('./auth/auth-controller')();
 let authRouter = require('./auth/auth-router')();
-//let authRouter = require('./auth/auth-router')(req, res);
 
 let routes = () => {
   let apiRouter = express.Router();
-  apiRouter.use('/', (req, res, next) => {
-    console.log('in apiRouter');
-    next();
-  });
+  // apiRouter.use('/', (req, res, next) => {
+  //   console.log('in apiRouter');
+  //   next();
+  // });
 
   apiRouter.get('/', (req, res) => {
     res.send({

@@ -38,6 +38,9 @@ next:
 - chase linting errors
 - merge code
 - protected routes
+- add tests
+- find out when to use let and const
+- connect user to passport in local-strategy
 
 todo (low prio):
 - Mockgoose doesn't run on the pi: unsupported architecture, ia32 and x64 are the only valid options
