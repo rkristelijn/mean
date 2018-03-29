@@ -1,6 +1,7 @@
 let passport = require('passport');
 
 module.exports = (app) => {
+  console.log('using passport');
   app.use(passport.initialize());
   app.use(passport.session());
 

@@ -10,8 +10,8 @@ let useAdapter = require('./users/user-adapter')(User);
 let userController = require('./users/user-controller')(useAdapter);
 let userRouter = require('./users/user-router')(userController);
 
-let authController = require('./auth/auth-controller')();
-let authRouter = require('./auth/auth-router')(authController);
+//let authController = require('./auth/auth-controller')();
+let authRouter = require('./auth/auth-router')();
 //let authRouter = require('./auth/auth-router')(req, res);
 
 let routes = () => {
