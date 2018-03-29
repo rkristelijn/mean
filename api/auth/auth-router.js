@@ -19,12 +19,13 @@ let routes = () => {
     .post(
       passport.authenticate('local'),
       (req, res) => {
-        console.log('in post');
+        console.log('in post of login');
         res.end('login success');
       });
 
   authRouter.route('/local/logout')
     .get((req, res) => {
+      console.log('in get of logout');
       req.logout();
       res.end('logout success');
     });
