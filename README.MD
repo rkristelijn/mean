@@ -34,11 +34,11 @@ done:
 - simple login form on url http://localhost:3100/api/auth/local/login
 
 doing:
-- remove console output
+[x] remove console output
 [x] chase linting errors
 - merge code
 - protected routes
-- add tests
+[-] add tests
 - find out when to use let and const
 - connect user to passport in local-strategy
 

@@ -33,7 +33,7 @@
     "watch": "npm-watch",
     "test:integration:coverage": "nyc mocha '**/*integration.test.js' --color --exit",
     "test:unit:coverage": "nyc mocha '**/*unit.test.js' --color --exit",
-    "test:watch:coverage": "nyc mocha '**/user.integration.test.js' --color --exit",
+    "test:watch:coverage": "nyc mocha '**/passport.integration.test.js' --color --exit",
     "prestart": "echo 'Starting...'",
     "prestop": "echo 'Stopping...'"
   },

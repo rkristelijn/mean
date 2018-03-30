@@ -2,23 +2,33 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 const expect = require('chai').expect;
-const passport = require('./passport');
+const passport = require('passport');
+
+let sampleUser = {
+  username: 'hello',
+  password: 'hello'
+};
 
 describe('passport', () => {
   describe('serializeUser', () => {
-    xit('Should test nothing', (done) => {
-      let sampleUser = {
-        username: 'hello',
-        password: 'hello'
-      };
-      // passport.authenticate(sampleUser, (err, user) => {
-      //   console.log(user);
-      //   expect(user).to.deep.equal(sampleUser);
-      //   done();
-      // });
-      expect(passport).not.equal(false);
+    xit('Should login', (done) => {
+      passport.authenticate('local', (err, user) => {
+        // does nothing here
+        console.log(user);
+        expect(user).to.deep.equal(sampleUser);
+        done();
+      });
+      //what to check here?
       done();
     });
   });
-  describe('deserializeUser', () => { });
+  describe('deserializeUser', () => {
+    xit('Should logout', (done) => {
+      // passport.deserializeUser(null, (err, user) => {
+      //   console.log(user);
+      //   console.log(err);
+      // });
+      done();
+    });
+  });
 });

@@ -9,7 +9,7 @@ const uuid = require('../shared/uuid')();
 let id;
 let id2;
 
-describe('Book integation testing with Supertest, Mocha and Chai...', () => {
+describe('User integation testing with Supertest, Mocha and Chai...', () => {
   let server;
   let user = {
     username: uuid.new(),
