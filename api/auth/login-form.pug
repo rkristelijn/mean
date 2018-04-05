@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+  head
+    title= loginForm
+  body
+    if loggedIn
+      h1 You are logged in
+      a(href="logout") logout
+    else
+      h1 You are not logged in
+      form(action="#" method="POST")
+        div.form-group
+          label(for="username") Username
+          input.form-control(type="text" id="username" placeholder="Username" name="username")
+        div.form-group
+          label(for="username") Password
+          input.form-control(type="password" id="password" placeholder="Password" name="password")
+        button.btn.btn-primary(type='submit') Log in

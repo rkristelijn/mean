@@ -7,21 +7,34 @@ const request = require('supertest')(app);
 const uuid = require('../shared/uuid')();
 
 let id;
+let id2;
 
-describe('Book integation testing with Supertest, Mocha and Chai...', () => {
+describe('User integation testing with Supertest, Mocha and Chai...', () => {
   let server;
-  let book = {
-    title: uuid.new(),
-    author: uuid.new(),
-    genre: uuid.new()
+  let user = {
+    username: uuid.new(),
+    password: uuid.new(),
+    salt: uuid.new(),
+    displayName: uuid.new(),
+    image: uuid.new(),
+    email: uuid.new()
+  };
+
+  let user2 = {
+    username: uuid.new(),
+    password: uuid.new(),
+    salt: uuid.new(),
+    displayName: uuid.new(),
+    image: uuid.new(),
+    email: uuid.new()
   };
 
   before((done) => {
     server = app.listen(0, done);
     request
-      .post('/api/books')
+      .post('/api/users')
       .set('Content-Type', 'application/json')
-      .send(book)
+      .send(user)
       .end((req, res) => {
         id = res.body._id;
       });
@@ -29,19 +42,20 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
   after(() => {
     server.close();
   });
+
   describe('Get', () => {
-    it('get "/api/books" Should return an array', (done) => {
+    it('get "/api/users" Should return an array', (done) => {
       request
-        .get('/api/books')
+        .get('/api/users')
         .expect(200)
         .expect((response) => {
           expect(response.body).to.be.an('Array');
         })
         .end(done);
     });
-    it('get "/api/books/:id" should return a book', (done) => {
+    it('get "/api/users/:id" should return a user', (done) => {
       request
-        .get(`/api/books/${id}`)
+        .get(`/api/users/${id}`)
         .end((err, res) => {
           expect(res.status).equal(200);
           expect(res.body).to.have.property('_id');
@@ -49,23 +63,23 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
           done();
         });
     });
-    it('get "/api/books/:id" should return a 400 on nonObjectId', (done) => {
+    it('get "/api/users/:id" should return a 400 on nonObjectId', (done) => {
       request
-        .get('/api/books/allyourbase')
+        .get('/api/users/allyourbase')
         .expect(400)
         .end(done);
     });
-    it('get "/api/books/:id" should NOT return a book', (done) => {
+    it('get "/api/users/:id" should NOT return a user', (done) => {
       request
-        .get('/api/books/000000000000000000000001')
+        .get('/api/users/000000000000000000000001')
         .expect(404)
         .end(done);
     });
   });
   describe('Post', () => {
-    it('post "/api/books" Should return a Book', (done) => {
+    it('post "/api/users" Should return an User', (done) => {
       request
-        .post('/api/books')
+        .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
           message: 'Hello, Server!'
@@ -75,130 +89,131 @@ describe('Book integation testing with Supertest, Mocha and Chai...', () => {
         })
         .end(done);
     });
-    it('post "/api/books" Should return an error "Title is required"', (done) => {
+    it('post "/api/users" Should return an error "displayName is required"', (done) => {
       request
-        .post('/api/books')
+        .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          author: 'test',
-          genre: 'test'
+          username: 'test',
+          password: 'test'
         })
         .expect(400)
-        .expect('Title is required')
+        .expect('User validation failed: displayName: Path `displayName` is required.')
         .end(done);
     });
-    it('post "/api/books" Should create a book"', (done) => {
+    it('post "/api/users" Should create a user"', (done) => {
       request
-        .post('/api/books')
+        .post('/api/users')
         .set('Content-Type', 'application/json')
-        .send(book)
+        .send(user2)
         .end((err, res) => {
           expect(res.status).equal(201);
           expect(res.body).to.have.property('_id');
-          expect(res.body.title).to.equal(book.title);
-          expect(res.body.author).to.equal(book.author);
-          expect(res.body.genre).to.equal(book.genre);
-          expect(res.body.read).to.equal(false);
-
-          id = res.body._id;
-
+          expect(res.body.username).to.equal(user2.username);
+          expect(res.body.displayName).to.equal(user2.displayName);
+          id2 = res.body._id;
+          done();
+        });
+    });
+    it('post "/api/users" Should throw unique error"', (done) => {
+      request
+        .post('/api/users')
+        .set('Content-Type', 'application/json')
+        .send(user2)
+        .end((err, res) => {
+          expect(res.status).equal(400);
+          expect(res.text.substr(0, 32)).to.equal('E11000 duplicate key error index');
           done();
         });
     });
   });
   describe('Put', () => {
-    it('put "/api/books/:id" should return an updated book.author', (done) => {
+    it('put "/api/users/:id" should return an updated user.displayName', (done) => {
       request
-        .put(`/api/books/${id}`)
+        .put(`/api/users/${id}`)
         .set('Content-Type', 'application/json')
         .send({
-          author: 'updatetest'
+          displayName: 'updatetest'
         })
         .expect(200)
         .expect(response => {
           expect(response.body).to.have.property('_id');
           expect(response.body._id).to.equal(id);
-          expect(response.body.title).to.equal(book.title);
-          expect(response.body.author).to.equal('updatetest');
-          expect(response.body.read).to.equal(false);
+          expect(response.body.username).to.equal(user.username);
+          expect(response.body.displayName).to.equal('updatetest');
         })
         .end(done);
     });
-    it('put "/api/books/:id" should return an updated book.genre', (done) => {
+    it('put "/api/users/:id" should return an updated user.password', (done) => {
       request
-        .put(`/api/books/${id}`)
+        .put(`/api/users/${id}`)
         .set('Content-Type', 'application/json')
         .send({
-          genre: 'updatetest genre'
+          password: 'updatetest password'
         })
         .expect(200)
         .expect(response => {
           expect(response.body).to.have.property('_id');
           expect(response.body._id).to.equal(id);
-          expect(response.body.title).to.equal(book.title);
-          expect(response.body.genre).to.equal('updatetest genre');
-          expect(response.body.read).to.equal(false);
+          expect(response.body.username).to.equal(user.username);
+          expect(response.body.password).to.equal('updatetest password');
         })
         .end(done);
     });
   });
   describe('Patch', () => {
-    it('patch "/api/books/:id" should return an updated book.author', (done) => {
+    it('patch "/api/users/:id" should return an updated user.salt', (done) => {
       request
-        .patch(`/api/books/${id}`)
+        .patch(`/api/users/${id}`)
         .set('Content-Type', 'application/json')
         .send({
-          author: 'updatetest'
+          salt: 'updatetest'
         })
         .expect(200)
         .expect(response => {
           expect(response.body).to.have.property('_id');
           expect(response.body._id).to.equal(id);
-          expect(response.body.title).to.equal(book.title);
-          expect(response.body.author).to.equal('updatetest');
-          expect(response.body.read).to.equal(false);
+          expect(response.body.username).to.equal(user.username);
+          expect(response.body.salt).to.equal('updatetest');
         })
         .end(done);
     });
-    it('patch "/api/books/:id" should return an updated book.genre', (done) => {
+    it('patch "/api/users/:id" should return an updated user.image', (done) => {
       request
-        .patch(`/api/books/${id}`)
+        .patch(`/api/users/${id}`)
         .set('Content-Type', 'application/json')
         .send({
-          genre: 'updatetest genre'
+          image: 'updatetest image'
         })
         .expect(200)
         .expect(response => {
           expect(response.body).to.have.property('_id');
           expect(response.body._id).to.equal(id);
-          expect(response.body.title).to.equal(book.title);
-          expect(response.body.genre).to.equal('updatetest genre');
-          expect(response.body.read).to.equal(false);
+          expect(response.body.image).to.equal('updatetest image');
         })
         .end(done);
     });
   });
   describe('Delete', () => {
-    it('delete "/api/books/:id" should delete a book', (done) => {
+    it('delete "/api/users/:id" should delete a user', (done) => {
       request
-        .delete(`/api/books/${id}`)
+        .delete(`/api/users/${id}`)
         .expect(204, done);
-
       done();
     });
-    it('delete "/api/books/bla" should error out', (done) => {
+    it('delete "/api/users/bla" should error out', (done) => {
       request
-        .delete('/api/books/bla')
+        .delete('/api/users/bla')
         .set('Content-Type', 'application/json')
         .send({
           genre: 'updatetest genre'
         })
         .expect(400)
-        .expect('Cast to ObjectId failed for value: bla', done);
+        .expect('Cast to ObjectId failed for value "bla" at path "_id" for model "User"', done);
     });
-    it('delete "/api/books/" should error out', (done) => {
+    it('delete "/api/users/" should error out', (done) => {
       request
-        .delete('/api/books/')
+        .delete('/api/users/')
         .set('Content-Type', 'application/json')
         .send({
           genre: 'updatetest genre'

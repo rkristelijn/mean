@@ -5,61 +5,60 @@ const errId = 'FFFFFFFFFFFFFFFFFFFFFFFF';
 const notFoundId = '535cf8e3df3aaa723fc9cad1';
 
 
-let bookAdapterMock;
-let bookController;
+let userAdapterMock;
+let userController;
 let req;
 let res;
 
 let forceError = false;
 
-let sampleBook = {
-  title: 'The Best Way to Catch a Snake',
-  author: 'Karma Yeshe Rabgye',
-  isbn: '1505725410',
-  language: 'English',
-  genre: 'personal development',
-  read: false,
+let sampleuser = {
+  username: 'scott',
+  password: 'tiger',
+  displayName: 'Bruce Scott',
+  image: 'http://www.orafaq.com/wiki/images/c/c1/Bruce_Scott.jpg',
+  email: 'b.scott@oracle.com',
   _id: okId,
   _v: okId
 };
 
-let templateFunction = (book, bookAdapterErr, bookAdapterSuccess) => {
+let templateFunction = (user, userAdapterErr, userAdapterSuccess) => {
   if (forceError) {
     forceError = false;
-    bookAdapterErr('Connection reset by peer');
+    userAdapterErr('Connection reset by peer');
     return;
   }
 
-  switch (book.id) {
+  switch (user.id) {
   case errId:
-    bookAdapterErr('User Too Ugly');
+    userAdapterErr('User Too Ugly');
     break;
   case okId:
-    bookAdapterSuccess(sampleBook);
+    userAdapterSuccess(sampleuser);
     break;
   case notFoundId:
-    bookAdapterSuccess();
+    userAdapterSuccess();
     break;
   default:
-    bookAdapterSuccess(book);
+    userAdapterSuccess(user);
     break;
   }
 };
 
-describe('book-controller', () => {
+describe('user-controller', () => {
   beforeEach((done) => {
-    bookAdapterMock = {
+    userAdapterMock = {
       create: sinon.spy(templateFunction),
       query: sinon.spy(templateFunction),
       read: sinon.spy(templateFunction),
       update: sinon.spy(templateFunction),
       delete: sinon.spy(templateFunction)
     };
-    bookController = require('./book-controller')(bookAdapterMock);
+    userController = require('./user-controller')(userAdapterMock);
     req = {
       body: 'bodyid',
       params: {
-        bookId: 'paramsid'
+        userId: 'paramsid'
       }
     };
     res = {
@@ -73,13 +72,13 @@ describe('book-controller', () => {
 
   describe('Create', () => {
     it('Should create', (done) => {
-      bookController.create(req, res);
-      expect(bookAdapterMock.create.args[0][0]).to.be.equal('bodyid');
+      userController.create(req, res);
+      expect(userAdapterMock.create.args[0][0]).to.be.equal('bodyid');
       done();
     });
     it('Should throw error on mock Adapter', (done) => {
       forceError = true;
-      bookController.create(req, res);
+      userController.create(req, res);
       expect(res.status.args[0][0]).to.be.equal(400);
       expect(res.send.args[0][0]).to.be.equal('Connection reset by peer');
       done();
@@ -87,13 +86,13 @@ describe('book-controller', () => {
   });
   describe('ReadAll', () => {
     it('Should query', (done) => {
-      bookController.readAll(req, res);
-      expect(bookAdapterMock.query.args[0][0]).to.be.deep.equal({});
+      userController.readAll(req, res);
+      expect(userAdapterMock.query.args[0][0]).to.be.deep.equal({});
       done();
     });
     it('Should throw error on mock Adapter', (done) => {
       forceError = true;
-      bookController.readAll({}, res);
+      userController.readAll({}, res);
       expect(res.status.args[0][0]).to.be.equal(400);
       expect(res.send.args[0][0]).to.be.equal('Connection reset by peer');
       done();
@@ -101,24 +100,24 @@ describe('book-controller', () => {
   });
   describe('ReadOne', () => {
     it('Should read', (done) => {
-      bookController.readOne(req, res);
-      expect(bookAdapterMock.read.args[0][0]).to.be.deep.equal({ id: 'paramsid' });
+      userController.readOne(req, res);
+      expect(userAdapterMock.read.args[0][0]).to.be.deep.equal({ id: 'paramsid' });
       done();
     });
     it('Should throw error on mock Adapter', (done) => {
-      bookController.readOne({
+      userController.readOne({
         params: {
-          bookId: errId
+          userId: errId
         }
       }, res);
       expect(res.status.args[0][0]).to.be.equal(400);
       expect(res.send.args[0][0]).to.be.equal('User Too Ugly');
       done();
     });
-    it('Should throw error on empty book', (done) => {
-      bookController.readOne({
+    it('Should throw error on empty user', (done) => {
+      userController.readOne({
         params: {
-          bookId: notFoundId
+          userId: notFoundId
         }
       }, res);
       expect(res.status.args[0][0]).to.be.equal(404);
@@ -127,35 +126,35 @@ describe('book-controller', () => {
     });
     it('Should throw error on empty req.params', (done) => {
       req.params = {};
-      bookController.readOne(req, res);
+      userController.readOne(req, res);
       expect(res.status.args[0][0]).to.be.equal(400);
-      expect(res.send.args[0][0]).to.be.equal('bookId is required');
+      expect(res.send.args[0][0]).to.be.equal('userId is required');
       done();
     });
     it('Should throw error on empty req', (done) => {
       req = {};
-      bookController.readOne(req, res);
+      userController.readOne(req, res);
       expect(res.status.args[0][0]).to.be.equal(400);
-      expect(res.send.args[0][0]).to.be.equal('bookId is required');
+      expect(res.send.args[0][0]).to.be.equal('userId is required');
       done();
     });
   });
   describe('UpdateOne', () => {
     it('Should update', (done) => {
-      bookController.updateOne({
-        body: sampleBook,
+      userController.updateOne({
+        body: sampleuser,
         params: {
-          bookId: okId
+          userId: okId
         }
       }, res);
-      expect(bookAdapterMock.update.args[0][0]).has.property('id', okId);
+      expect(userAdapterMock.update.args[0][0]).has.property('id', okId);
       done();
     });
     it('Should throw error on mock Adapter', (done) => {
-      bookController.updateOne({
-        body: sampleBook,
+      userController.updateOne({
+        body: sampleuser,
         params: {
-          bookId: errId
+          userId: errId
         }
       }, res);
       expect(res.status.args[0][0]).to.be.equal(400);
@@ -164,35 +163,35 @@ describe('book-controller', () => {
     });
     it('Should throw error on empty req.params', (done) => {
       req.params = {};
-      bookController.updateOne(req, res);
+      userController.updateOne(req, res);
       expect(res.status.args[0][0]).to.be.equal(400);
-      expect(res.send.args[0][0]).to.be.equal('bookId is required');
+      expect(res.send.args[0][0]).to.be.equal('userId is required');
       done();
     });
     it('Should throw error on empty req', (done) => {
       req = {};
-      bookController.updateOne(req, res);
+      userController.updateOne(req, res);
       expect(res.status.args[0][0]).to.be.equal(400);
-      expect(res.send.args[0][0]).to.be.equal('bookId is required');
+      expect(res.send.args[0][0]).to.be.equal('userId is required');
       done();
     });
   });
   describe('DeleteOne', () => {
     it('Should delete', (done) => {
-      bookController.deleteOne({
+      userController.deleteOne({
         params: {
-          bookId: okId
+          userId: okId
         }
       }, res);
-      expect(bookAdapterMock.delete.args[0][0]).to.be.deep.equal({
+      expect(userAdapterMock.delete.args[0][0]).to.be.deep.equal({
         id: okId
       });
       done();
     });
     it('Should throw error on mock Adapter', (done) => {
-      bookController.deleteOne({
+      userController.deleteOne({
         params: {
-          bookId: errId
+          userId: errId
         }
       }, res);
       expect(res.status.args[0][0]).to.be.equal(400);
@@ -201,16 +200,16 @@ describe('book-controller', () => {
     });
     it('Should throw error on empty req.params', (done) => {
       req.params = {};
-      bookController.deleteOne(req, res);
+      userController.deleteOne(req, res);
       expect(res.status.args[0][0]).to.be.equal(400);
-      expect(res.send.args[0][0]).to.be.equal('bookId is required');
+      expect(res.send.args[0][0]).to.be.equal('userId is required');
       done();
     });
     it('Should throw error on empty req', (done) => {
       req = {};
-      bookController.deleteOne(req, res);
+      userController.deleteOne(req, res);
       expect(res.status.args[0][0]).to.be.equal(400);
-      expect(res.send.args[0][0]).to.be.equal('bookId is required');
+      expect(res.send.args[0][0]).to.be.equal('userId is required');
       done();
     });
   });
