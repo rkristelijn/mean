@@ -18,7 +18,7 @@
   "scripts": {
     "start": "npm run watch start:parallel:refresh",
     "start:watch:test": "npm run watch test:watch:coverage",
-    "start:parallel:norefresh": "npm-run-all --parallel test:security test:unit lint serve:nodemon | gnomon --type=elapsed-total",
+    "start:parallel:norefresh": "npm-run-all --parallel test:security test:unit test:integration lint serve:nodemon | gnomon --type=elapsed-total",
     "start:parallel:refresh": "npm-run-all --parallel test:security test:unit test:integration lint serve | gnomon --type=elapsed-total",
     "nodemon": "nodemon index.js --exec 'npm run parellel' | gnomon --type=elapsed-total",
     "parellel": "npm-run-all --parallel test:security test:unit lint",
@@ -75,6 +75,7 @@
     "nsp": "^3.1.0",
     "nyc": "^11.4.1",
     "sinon": "^4.4.2",
+    "superagent": "^3.8.2",
     "supertest": "^3.0.0"
   }
 }

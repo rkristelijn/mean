@@ -14,7 +14,7 @@ describe('passport', () => {
     xit('Should login', (done) => {
       passport.authenticate('local', (err, user) => {
         // does nothing here
-        console.log(user);
+        //console.log(user);
         expect(user).to.deep.equal(sampleUser);
         done();
       });

@@ -4,7 +4,9 @@
 const expect = require('chai').expect;
 const app = require('../../app');
 const request = require('supertest')(app);
-const uuid = require('../shared/uuid')();
+//const superagent = require('superagent');
+// @see https://jaketrent.com/post/authenticated-supertest-tests/
+//const agent = superagent.agent();
 
 describe('Passport integration test', () => {
   let server;
@@ -14,18 +16,31 @@ describe('Passport integration test', () => {
   after(() => {
     server.close();
   });
-  it('Should not be logged in', done => {
-    let user;
+  it('Should not be logged in', (done) => {
     request
       .get('/')
       .expect(200)
       .expect(response => {
-        console.log(response);
-        expect(req.user).to.be.undefined;
-        done();
-      });
-
-    //expect('should').equal('not come here');
-    //done();
+        /* eslint-disable no-unused-expressions */
+        expect(response.user).to.be.undefined;
+      })
+      .end(done);
+  });
+  it('Should log in', done => {
+    request
+      .post('/api/auth/local/login')
+      .set('Content-Type', 'application/json')
+      .send({
+        username: 'myusername',
+        password: 'myusername'
+      })
+      .expect(302)
+      .end(done);
+  });
+  it('Should log out', done => {
+    request
+      .get('/api/auth/local/logout')
+      .expect(302)
+      .end(done);
   });
 });

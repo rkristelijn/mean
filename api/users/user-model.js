@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const uuid = require('../shared/uuid')();
 
 const userModel = new Schema({
   username: {
@@ -39,10 +40,23 @@ const userModel = new Schema({
   },
   linkedin: {
     type: Object
+  },
+  role: {
+    type: Array,
+    default: ['user']
   }
 });
 
+const User = mongoose.model('User', userModel);
+
+User.schema.pre('save', (next) => {
+  if (!this.salt) {
+    this.salt = uuid.new();
+  }
+  next();
+});
+
 module.exports = {
-  User: mongoose.model('User', userModel),
+  User: User,
   userModel: userModel
 };

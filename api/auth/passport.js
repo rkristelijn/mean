@@ -1,5 +1,5 @@
 let passport = require('passport');
-
+// todo: read http://devsmash.com/blog/password-authentication-with-mongoose-and-bcrypt
 module.exports = (app) => {
   app.use(passport.initialize());
   app.use(passport.session());

@@ -9,14 +9,14 @@ let routes = () => {
 
   authRouter.route('/local/login')
     .get((req, res) => {
-      let loggedIn = false;
-      if (req.user) {
-        loggedIn = true;
-      }
+      // let loggedIn = false;
+      // if (req.user) {
+      //   loggedIn = true;
+      // }
       res.end(pug.renderFile(__dirname + '/login-form.pug',
         {
           actionUrl: '/api/auth/local/login',
-          loggedIn: loggedIn
+          loggedIn: !!req.user
         }
       ));
     })

@@ -9,6 +9,7 @@ module.exports = () => {
           username: 'scott',
           password: 'tiger',
           displayName: 'Bruce Scott',
+          roles: [ 'user', 'admin'],
           image: 'http://www.orafaq.com/wiki/images/c/c1/Bruce_Scott.jpg',
           email: 'b.scott@oracle.com',
           _id: '5abb58893bf0f15e2a48dda4',

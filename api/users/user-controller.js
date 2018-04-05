@@ -69,13 +69,17 @@ let userController = (userAdapter) => {
       res.status(204);
     });
   };
+  let _isAdmin = (req) => {
+    return(req.user ? req.user.roles.indexOf('admin') > -1 : false);
+  };
 
   return {
     create: _create,
     readOne: _readOne,
     readAll: _readAll,
     updateOne: _updateOne,
-    deleteOne: _deleteOne
+    deleteOne: _deleteOne,
+    isAdmin: _isAdmin
   };
 };
 module.exports = userController;

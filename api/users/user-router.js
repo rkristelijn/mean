@@ -2,6 +2,13 @@ const express = require('express');
 
 let routes = (userController) => {
   let userRouter = express.Router();
+
+  userRouter.use((req, res, next) => {
+    //console.log('in generic userRouter');
+    //console.log(userController.isAdmin(req));
+    next();
+  });
+
   userRouter.route('/')
     .post(userController.create)
     .get(userController.readAll)
