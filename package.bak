@@ -6,19 +6,13 @@
   "watch": {
     "start:parallel:refresh": {
       "patterns": ".",
-      "extensions": "js,json,html,css,pug",
-      "quiet": true
-    },
-    "test:watch:coverage": {
-      "patterns": ".",
-      "extensions": "js,json,html,css,pug",
+      "extensions": "js,json,html,css",
       "quiet": true
     }
   },
   "scripts": {
     "start": "npm run watch start:parallel:refresh",
-    "start:watch:test": "npm run watch test:watch:coverage",
-    "start:parallel:norefresh": "npm-run-all --parallel test:security test:unit test:integration lint serve:nodemon | gnomon --type=elapsed-total",
+    "start:parallel:norefresh": "npm-run-all --parallel test:security test:unit lint serve:nodemon | gnomon --type=elapsed-total",
     "start:parallel:refresh": "npm-run-all --parallel test:security test:unit test:integration lint serve | gnomon --type=elapsed-total",
     "nodemon": "nodemon index.js --exec 'npm run parellel' | gnomon --type=elapsed-total",
     "parellel": "npm-run-all --parallel test:security test:unit lint",
@@ -31,9 +25,10 @@
     "lint:fix": "eslint . --color --fix; exit 0",
     "start:fast": "nodemon index.js",
     "watch": "npm-watch",
-    "test:integration:coverage": "nyc mocha '**/*integration.test.js' --color --exit",
-    "test:unit:coverage": "nyc mocha '**/*unit.test.js' --color --exit",
-    "test:watch:coverage": "nyc mocha '**/passport.integration.test.js' --color --exit"
+    "test:integration:coverage": "nyc mocha '**/*integration.test.js' --exit",
+    "test:unit:coverage": "nyc mocha '**/*unit.test.js' --exit",
+    "prestart": "echo 'Starting...'",
+    "prestop": "echo 'Stopping...'"
   },
   "repository": {
     "type": "git",
@@ -54,8 +49,7 @@
     "mongoose": "^5.0.7",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
-    "passport-local": "^1.0.0",
-    "pug": "^2.0.3"
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -73,7 +67,6 @@
     "nsp": "^3.1.0",
     "nyc": "^11.4.1",
     "sinon": "^4.4.2",
-    "superagent": "^3.8.2",
     "supertest": "^3.0.0"
   }
 }

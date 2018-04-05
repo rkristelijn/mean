@@ -23,7 +23,8 @@ let routes = () => {
     .post(
       passport.authenticate('local'),
       (req, res) => {
-        res.redirect('/api/auth/local/login');
+        //res.redirect('/api/auth/local/login');
+        res.redirect('/app');
       });
 
   authRouter.route('/local/logout')

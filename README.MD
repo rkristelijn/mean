@@ -9,7 +9,7 @@ to get started:
 - start app with linting, tests (`npm start --silent`)
 - start app fast (`npm run start:fast --silent`)
 
-Steps done:
+## Steps done:
 
 [x] git init
 [x] npm init
@@ -34,7 +34,7 @@ Steps done:
 [x] simple login form on url http://localhost:3100/api/auth/local/login
 [x] remove console output
 [x] chase linting errors
-[-] merge code
+[x] merge code
 [x] add tests
 
 todo (low prio):
@@ -52,7 +52,7 @@ todo (low prio):
 ## The plan
 
 - [x] REST API and HATEOS (dev webserver, linting, routes, get, post, put, patch, unit tests, unit http tests, test data)
-- [ ] OAuth/passport (local and github strategy, logout, save user in db, secure routes)
+- [x] OAuth/passport (local and github strategy, logout, save user in db, secure routes)
 - [ ] Front-end basics (proxy, fetch, dev server for front-end, watching files and building, refactoring, testing)
 - [ ] Front-end cosmetics (header, footer, menu, views, routes, secure routes, refactoring, testing)
 - [ ] Front-end data (interfaces, services, refactoring, testing)

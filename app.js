@@ -50,6 +50,9 @@ require('./api/auth/passport')(app);
 let apiRouter = require('./api/api-router')();
 app.use('/api', apiRouter);
 
+let appRouter = require('./app/app-router')();
+app.use('/app', appRouter);
+
 app.get('/', (req, res) => {
   res.send('Hello world\n');
 });
