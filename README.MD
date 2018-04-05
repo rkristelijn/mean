@@ -10,6 +10,7 @@ to get started:
 - start app fast (`npm run start:fast --silent`)
 
 Steps done:
+
 [x] git init
 [x] npm init
 [x] created github repo
