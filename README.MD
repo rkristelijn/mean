@@ -10,44 +10,43 @@ to get started:
 - start app fast (`npm run start:fast --silent`)
 
 Steps done:
-- git init
-- npm init
-- created github repo
-- added express and basic node app
-- added chalk for console highlighting
-- added linting using eslint
-- added testing using mocha and chai
-- added nodemon, restart test and lint
-- added timing using gnomon
-- time build, better output
-- watch files and run npm-run-all on change
-- added tests with sinon
-- added findById + test
-- REST API: CRUD operations for service - get, post, put, patch, delete
-- added adapter to enable better testing
-- added testing adapter and controller
-- added supertest for intergration tests
-- testing routes
-- passport local strategy
-
-done:
-- simple login form on url http://localhost:3100/api/auth/local/login
-
-doing:
+[x] git init
+[x] npm init
+[x] created github repo
+[x] added express and basic node app
+[x] added chalk for console highlighting
+[x] added linting using eslint
+[x] added testing using mocha and chai
+[x] added nodemon, restart test and lint
+[x] added timing using gnomon
+[x] time build, better output
+[x] watch files and run npm-run-all on change
+[x] added tests with sinon
+[x] added findById + test
+[x] REST API: CRUD operations for service - get, post, put, patch, delete
+[x] added adapter to enable better testing
+[x] added testing adapter and controller
+[x] added supertest for intergration tests
+[x] testing routes
+[x] passport local strategy
+[x] find out when to use let and const: const need to be assigned directly and cannot be reassigned.
+[x] simple login form on url http://localhost:3100/api/auth/local/login
 [x] remove console output
 [x] chase linting errors
-- merge code
-- protected routes
-[-] add tests
-- find out when to use let and const
-- connect user to passport in local-strategy
+[-] merge code
+[x] add tests
 
 todo (low prio):
+- login module
+  - protected routes
+  - connect user to passport in local-strategy
 - Mockgoose doesn't run on the pi: unsupported architecture, ia32 and x64 are the only valid options
 @see [github.com/mccormicka/Mockgoose/issues/231](https://github.com/mccormicka/Mockgoose/issues/231)
 - add sinon test for [chained function calls](https://stackoverflow.com/questions/37948135/how-do-i-stub-a-chain-of-methods-in-sinon)
 - fix tightly coupled http and controller
 - optimize HATEOS
+- implement helmet https://www.npmjs.com/package/helmet
+- play around with nodegoat https://github.com/OWASP/NodeGoat
 
 ## The plan
 
